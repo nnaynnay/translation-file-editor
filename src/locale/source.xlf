@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US">
+  <file id="ngi18n" original="ng.template">
+    <unit id="sample.title">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:10,11</note>
+      </notes>
+      <segment>
+        <source>I18n Sample Page</source>
+      </segment>
+    </unit>
+    <unit id="sample.basic.header">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:14,15</note>
+        <note category="description">Header for basic text example</note>
+        <note category="meaning">section header</note>
+      </notes>
+      <segment>
+        <source>Basic Text</source>
+      </segment>
+    </unit>
+    <unit id="sample.basic.content">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:15,16</note>
+      </notes>
+      <segment>
+        <source>This is a simple paragraph that needs translation.</source>
+      </segment>
+    </unit>
+    <unit id="1297957034488360790">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:16,17</note>
+      </notes>
+      <segment>
+        <source>This paragraph has no custom ID, just the i18n attribute.</source>
+      </segment>
+    </unit>
+    <unit id="sample.images.header">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:20,21</note>
+      </notes>
+      <segment>
+        <source>Images</source>
+      </segment>
+    </unit>
+    <unit id="sample.image.alt">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:21</note>
+      </notes>
+      <segment>
+        <source>Angular Logo</source>
+      </segment>
+    </unit>
+    <unit id="sample.cardinal.header">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:25,26</note>
+      </notes>
+      <segment>
+        <source>Cardinal Plurals</source>
+      </segment>
+    </unit>
+    <unit id="sample.cardinal.message">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:27,29</note>
+      </notes>
+      <segment>
+        <source> Updated <ph id="0" equiv="ICU" disp="{minutes, plural, =0 {just now} =1 {one minute ago} other {{{minutes}} minutes ago}}" subFlows="1887283401472369100"/> </source>
+      </segment>
+    </unit>
+    <unit id="2002272803511843863">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:27,29</note>
+      </notes>
+      <segment>
+        <source>{VAR_PLURAL, plural, =0 {just now} =1 {one minute ago} other {<ph id="0" equiv="INTERPOLATION"/> minutes ago}}</source>
+      </segment>
+    </unit>
+    <unit id="sample.select.header">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:32,33</note>
+      </notes>
+      <segment>
+        <source>Select ICU</source>
+      </segment>
+    </unit>
+    <unit id="sample.select.message">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:34,36</note>
+      </notes>
+      <segment>
+        <source> The user is <ph id="0" equiv="ICU" disp="{gender, select, male {male} female {female} other {other}}" subFlows="7670372064920373295"/> </source>
+      </segment>
+    </unit>
+    <unit id="7670372064920373295">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:34,36</note>
+      </notes>
+      <segment>
+        <source>{VAR_SELECT, select, male {male} female {female} other {other}}</source>
+      </segment>
+    </unit>
+    <unit id="sample.currency.header">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:39,40</note>
+      </notes>
+      <segment>
+        <source>Currency Pipe</source>
+      </segment>
+    </unit>
+    <unit id="sample.currency.message">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:41,43</note>
+      </notes>
+      <segment>
+        <source> The price is: <ph id="0" equiv="INTERPOLATION" disp="{{ price | currency }}"/> </source>
+      </segment>
+    </unit>
+    <unit id="sample.date.header">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:46,47</note>
+      </notes>
+      <segment>
+        <source>Date Pipe</source>
+      </segment>
+    </unit>
+    <unit id="sample.date.message">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:48,50</note>
+      </notes>
+      <segment>
+        <source> Today is: <ph id="0" equiv="INTERPOLATION" disp="{{ today | date:&apos;fullDate&apos; }}"/> </source>
+      </segment>
+    </unit>
+    <unit id="4778259175865091078">
+      <notes>
+        <note category="location">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts:63</note>
+      </notes>
+      <segment>
+        <source>A sample sub title|Sub title@@sample.subTitle</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

@@ -1,0 +1,22 @@
+{
+  "locale": "en-US",
+  "translations": {
+    "sample.title": "I18n Sample Page",
+    "sample.basic.header": "Basic Text",
+    "sample.basic.content": "This is a simple paragraph that needs translation.",
+    "1297957034488360790": "This paragraph has no custom ID, just the i18n attribute.",
+    "sample.images.header": "Images",
+    "sample.image.alt": "Angular Logo",
+    "sample.cardinal.header": "Cardinal Plurals",
+    "sample.cardinal.message": " Updated {$ICU} ",
+    "2002272803511843863": "{VAR_PLURAL, plural, =0 {just now} =1 {one minute ago} other {{INTERPOLATION} minutes ago}}",
+    "sample.select.header": "Select ICU",
+    "sample.select.message": " The user is {$ICU} ",
+    "7670372064920373295": "{VAR_SELECT, select, male {male} female {female} other {other}}",
+    "sample.currency.header": "Currency Pipe",
+    "sample.currency.message": " The price is: {$INTERPOLATION} ",
+    "sample.date.header": "Date Pipe",
+    "sample.date.message": " Today is: {$INTERPOLATION} ",
+    "4778259175865091078": "A sample sub title|Sub title@@sample.subTitle"
+  }
+}

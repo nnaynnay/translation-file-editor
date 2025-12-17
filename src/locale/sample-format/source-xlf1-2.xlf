@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="sample.title" datatype="html">
+        <source>I18n Sample Page</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.basic.header" datatype="html">
+        <source>Basic Text</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+        <note priority="1" from="description">Header for basic text example</note>
+        <note priority="1" from="meaning">section header</note>
+      </trans-unit>
+      <trans-unit id="sample.basic.content" datatype="html">
+        <source>This is a simple paragraph that needs translation.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1297957034488360790" datatype="html">
+        <source>This paragraph has no custom ID, just the i18n attribute.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.images.header" datatype="html">
+        <source>Images</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.image.alt" datatype="html">
+        <source>Angular Logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.cardinal.header" datatype="html">
+        <source>Cardinal Plurals</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.cardinal.message" datatype="html">
+        <source> Updated <x id="ICU" equiv-text="{minutes, plural, =0 {just now} =1 {one minute ago} other {{{minutes}} minutes ago}}" xid="1887283401472369100"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">27,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2002272803511843863" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {just now} =1 {one minute ago} other {<x id="INTERPOLATION"/> minutes ago}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">27,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.select.header" datatype="html">
+        <source>Select ICU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.select.message" datatype="html">
+        <source> The user is <x id="ICU" equiv-text="{gender, select, male {male} female {female} other {other}}" xid="7670372064920373295"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">34,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7670372064920373295" datatype="html">
+        <source>{VAR_SELECT, select, male {male} female {female} other {other}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">34,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.currency.header" datatype="html">
+        <source>Currency Pipe</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.currency.message" datatype="html">
+        <source> The price is: <x id="INTERPOLATION" equiv-text="{{ price | currency }}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.date.header" datatype="html">
+        <source>Date Pipe</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sample.date.message" datatype="html">
+        <source> Today is: <x id="INTERPOLATION" equiv-text="{{ today | date:&apos;fullDate&apos; }}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">48,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4778259175865091078" datatype="html">
+        <source>A sample sub title|Sub title@@sample.subTitle</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/translation-editor/feature/sample-i18n/sample-i18n.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

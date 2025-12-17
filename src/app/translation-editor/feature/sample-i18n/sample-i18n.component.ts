@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-sample-i18n',
-    standalone: true,
-    imports: [CurrencyPipe, DatePipe],
-    template: `
+  selector: 'app-sample-i18n',
+  standalone: true,
+  imports: [CurrencyPipe, DatePipe],
+  template: `
     <div class="p-8 space-y-8">
       <h1 class="text-2xl font-bold" i18n="@@sample.title">I18n Sample Page</h1>
+      <h1 class="text-xl">{{ subTitle }}</h1>
 
       <section class="space-y-4">
         <h2 class="text-xl font-semibold" i18n="section header|Header for basic text example@@sample.basic.header">Basic Text</h2>
@@ -51,8 +52,13 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
   `
 })
 export class SampleI18nComponent {
-    minutes = 5;
-    gender = 'female';
-    price = 123.45;
-    today = new Date();
+  minutes = 5;
+
+  gender = 'female';
+
+  price = 123.45;
+
+  today = new Date();
+
+  subTitle = $localize`A sample sub title|Sub title@@sample.subTitle`;
 }
