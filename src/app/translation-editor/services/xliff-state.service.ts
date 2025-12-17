@@ -12,13 +12,28 @@ export class XliffStateService {
     readonly rawDocument = signal<Document | null>(null);
     readonly fileName = signal<string | null>(null);
     readonly units = signal<TranslationUnit[]>([]);
+    readonly modifiedIds = signal<Set<string>>(new Set());
 
     readonly filterQuery = signal<string>('');
+    readonly filterStatus = signal<'all' | 'translated' | 'missing' | 'changed'>('all');
 
     // Computed Signals
     readonly filteredUnits = computed(() => {
         const query = this.filterQuery().toLowerCase();
-        const all = this.units();
+        const status = this.filterStatus();
+        let all = this.units();
+
+        // 1. Filter by Status
+        if (status === 'translated') {
+            all = all.filter(u => u.target && u.target.trim() !== '');
+        } else if (status === 'missing') {
+            all = all.filter(u => !u.target || u.target.trim() === '');
+        } else if (status === 'changed') {
+            const modified = this.modifiedIds();
+            all = all.filter(u => modified.has(u.id));
+        }
+
+        // 2. Filter by Query
         if (!query) return all;
 
         return all.filter(u =>
@@ -35,7 +50,8 @@ export class XliffStateService {
         return {
             total: all.length,
             translated,
-            missing: all.length - translated
+            missing: all.length - translated,
+            changed: this.modifiedIds().size
         };
     });
 
@@ -47,6 +63,8 @@ export class XliffStateService {
         this.rawDocument.set(result.document);
         this.units.set(result.units);
         this.fileName.set(file.name);
+        this.modifiedIds.set(new Set()); // Reset modified tracking
+        this.filterStatus.set('all');
     }
 
     updateTranslation(id: string, newTarget: string) {
@@ -54,6 +72,13 @@ export class XliffStateService {
         this.units.update(current =>
             current.map(u => u.id === id ? { ...u, target: newTarget } : u)
         );
+
+        // Track modification
+        this.modifiedIds.update(ids => {
+            const newIds = new Set(ids);
+            newIds.add(id);
+            return newIds;
+        });
 
         // 2. Update the raw XML document
         const doc = this.rawDocument();
