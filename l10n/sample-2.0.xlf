@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="zh-Hant">
+  <file id="f1" original="sample-app-strings">
+    <group id="g1">
+      <unit id="welcome.title">
+        <notes>
+          <note category="description">Main welcome screen title.</note>
+        </notes>
+        <segment>
+          <source>Welcome to our app</source>
+          <target>歡迎使用我們的應用程式</target>
+        </segment>
+      </unit>
+
+      <unit id="welcome.subtitle">
+        <segment>
+          <source>Get started in seconds.</source>
+          <target>幾秒鐘即可開始使用。</target>
+        </segment>
+      </unit>
+
+      <unit id="button.continue">
+        <segment>
+          <source>Continue</source>
+          <target>繼續</target>
+        </segment>
+      </unit>
+
+      <unit id="button.cancel">
+        <segment>
+          <source>Cancel</source>
+          <target>取消</target>
+        </segment>
+      </unit>
+
+      <unit id="login.email.label">
+        <segment>
+          <source>Email</source>
+          <target>電子郵件</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

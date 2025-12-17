@@ -78,4 +78,20 @@
       </trans-unit>
     </body>
   </file>
+  <file source-language="en" target-language="ja" datatype="plaintext" original="sample-app-strings">
+    <body>
+      <trans-unit id="welcome.title" resname="welcome.title">
+        <source>Welcome to our app</source>
+        <target>アプリへようこそ</target>
+      </trans-unit>
+      <trans-unit id="welcome.subtitle" resname="welcome.subtitle">
+        <source>Get started in seconds.</source>
+        <target>すぐに始められます。</target>
+      </trans-unit>
+      <trans-unit id="button.continue" resname="button.continue">
+        <source>Continue</source>
+        <target>続ける</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
