@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2"
+       xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en"
+        target-language="zh-Hant"
+        datatype="plaintext"
+        original="sample-app-strings">
+    <header>
+      <tool tool-id="demo" tool-name="Sample XLIFF Generator" tool-version="1.0"/>
+    </header>
+
+    <body>
+      <trans-unit id="welcome.title" resname="welcome.title">
+        <source>Welcome to our app</source>
+        <target>歡迎使用我們的應用程式</target>
+        <note from="developer">Main welcome screen title.</note>
+      </trans-unit>
+
+      <trans-unit id="welcome.subtitle" resname="welcome.subtitle">
+        <source>Get started in seconds.</source>
+        <target>幾秒鐘即可開始使用。</target>
+      </trans-unit>
+
+      <trans-unit id="button.continue" resname="button.continue">
+        <source>Continue</source>
+        <target>繼續</target>
+      </trans-unit>
+
+      <trans-unit id="button.cancel" resname="button.cancel">
+        <source>Cancel</source>
+        <target>取消</target>
+      </trans-unit>
+
+      <trans-unit id="login.email.label" resname="login.email.label">
+        <source>Email</source>
+        <target>電子郵件</target>
+      </trans-unit>
+
+      <trans-unit id="login.password.label" resname="login.password.label">
+        <source>Password</source>
+        <target>密碼</target>
+      </trans-unit>
+
+      <trans-unit id="login.error.invalid" resname="login.error.invalid">
+        <source>Invalid email or password.</source>
+        <target>電子郵件或密碼無效。</target>
+      </trans-unit>
+
+      <trans-unit id="profile.greeting" resname="profile.greeting">
+        <source>Hello, {0}!</source>
+        <target>你好，{0}！</target>
+        <note from="developer">0 = user display name.</note>
+      </trans-unit>
+
+      <trans-unit id="settings.notifications" resname="settings.notifications">
+        <source>Notifications</source>
+        <target>通知</target>
+      </trans-unit>
+
+      <trans-unit id="settings.language" resname="settings.language">
+        <source>Language</source>
+        <target>語言</target>
+      </trans-unit>
+
+      <trans-unit id="dialog.delete.title" resname="dialog.delete.title">
+        <source>Delete item?</source>
+        <target>要刪除項目嗎？</target>
+      </trans-unit>
+
+      <trans-unit id="dialog.delete.body" resname="dialog.delete.body">
+        <source>This action cannot be undone.</source>
+        <target>此動作無法復原。</target>
+      </trans-unit>
+
+      <trans-unit id="dialog.delete.confirm" resname="dialog.delete.confirm">
+        <source>Delete</source>
+        <target>刪除</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

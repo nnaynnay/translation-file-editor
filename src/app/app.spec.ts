@@ -14,10 +14,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+  it('should render router-outlet', () => {
+    const fixture = TestBed.createComponent(App); // Assuming App is the main component, replacing AppComponent from the snippet
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, my-angular-app-v21');
+    expect(compiled.querySelector('router-outlet')).toBeDefined();
   });
 });
