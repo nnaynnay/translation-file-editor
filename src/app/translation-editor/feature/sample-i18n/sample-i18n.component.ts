@@ -7,6 +7,18 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
   imports: [CurrencyPipe, DatePipe],
   template: `
     <div class="p-8 space-y-8">
+      <div class="flex justify-end mb-4">
+        <label for="lang-switcher" class="mr-2 self-center">Language:</label>
+        <select 
+          id="lang-switcher" 
+          (change)="switchLanguage($event)"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          @for (lang of languages; track lang.code) {
+            <option [value]="lang.code">{{ lang.label }}</option>
+          }
+        </select>
+      </div>
       <h1 class="text-2xl font-bold" i18n="@@sample.title">I18n Sample Page</h1>
       <h1 class="text-xl">{{ subTitle }}</h1>
 
@@ -61,4 +73,21 @@ export class SampleI18nComponent {
   today = new Date();
 
   subTitle = $localize`A sample sub title|Sub title@@sample.subTitle`;
+
+  languages = [
+    { code: 'en-US', label: 'English (US)' },
+    { code: 'zh-HK', label: '繁體中文 (HK)' },
+    { code: 'ja', label: '日本語' }
+  ];
+
+  switchLanguage(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const langCode = target.value;
+
+    // In a real localized build, we would navigate to /{langCode}/...
+    // For this demo, we can just simulate or log it, or try to navigate if the server was set up.
+    // Assuming standard Angular build --localize output:
+    const newUrl = `/${langCode}/sample-i18n`;
+    window.location.href = newUrl;
+  }
 }

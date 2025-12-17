@@ -13,7 +13,11 @@
       "sourceRoot": "src",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": "en-US"
+        "sourceLocale": "en-US",
+        "locales": {
+          "zh-HK": "src/locale/source.zh-HK.xlf",
+          "ja": "src/locale/source.ja.xlf"
+        }
       },
       "architect": {
         "build": {
@@ -54,6 +58,12 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "zh-HK": {
+              "localize": ["zh-HK"]
+            },
+            "ja": {
+              "localize": ["ja"]
             }
           },
           "defaultConfiguration": "production"
@@ -66,6 +76,12 @@
             },
             "development": {
               "buildTarget": "my-angular-app-v21:build:development"
+            },
+            "zh-HK": {
+              "buildTarget": "my-angular-app-v21:build:zh-HK"
+            },
+            "ja": {
+              "buildTarget": "my-angular-app-v21:build:ja"
             }
           },
           "defaultConfiguration": "development"
