@@ -17,33 +17,21 @@ import { TranslationUnit } from '../../models/translation-unit.model';
         </thead>
         <tbody class="[&_tr:last-child]:border-0">
           @for (unit of units(); track unit.id) {
-            <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+            <tr 
+              class="border-b transition-colors hover:bg-muted/50 cursor-pointer"
+              [class.bg-muted]="selectedId() === unit.id"
+              (click)="unitSelect.emit(unit.id)"
+            >
               <td class="p-4 align-middle font-mono text-xs break-all text-muted-foreground">
                 {{ unit.id }}
               </td>
               <td class="p-4 align-middle text-foreground">
                 {{ unit.source }}
               </td>
-              <td class="p-4 align-middle">
-                @if (editingId() === unit.id) {
-                  <textarea 
-                    class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" 
-                    [value]="unit.target"
-                    (blur)="onSave(unit.id, $any($event.target).value)"
-                    (keydown.enter)="$event.preventDefault(); $any($event.target).blur()"
-                    rows="3"
-                    autoFocus
-                  ></textarea>
-                } @else {
-                  <div 
-                    class="cursor-pointer min-h-[40px] rounded-md border border-transparent px-3 py-2 hover:bg-accent hover:text-accent-foreground text-foreground"
-                    (click)="editingId.set(unit.id)"
-                    [class.text-muted-foreground]="!unit.target"
-                    [class.italic]="!unit.target"
-                  >
-                    {{ unit.target || 'Click to translate...' }}
-                  </div>
-                }
+              <td class="p-4 align-middle text-foreground">
+                 <div [class.text-muted-foreground]="!unit.target" [class.italic]="!unit.target">
+                    {{ unit.target || 'Empty' }}
+                 </div>
               </td>
               <td class="p-4 align-middle text-xs text-muted-foreground">
                 {{ unit.note }}
@@ -87,11 +75,10 @@ export class TranslationTableComponent {
   total = input.required<number>();
   pageIndex = input.required<number>();
   pageSize = input.required<number>();
+  selectedId = input<string | null>(null);
 
   pageChange = output<number>();
-  unitUpdate = output<{ id: string, target: string }>();
-
-  editingId = signal<string | null>(null);
+  unitSelect = output<string>();
 
   min(a: number, b: number) {
     return Math.min(a, b);
@@ -107,10 +94,5 @@ export class TranslationTableComponent {
     if ((this.pageIndex() + 1) * this.pageSize() < this.total()) {
       this.pageChange.emit(this.pageIndex() + 1);
     }
-  }
-
-  onSave(id: string, value: string) {
-    this.unitUpdate.emit({ id, target: value });
-    this.editingId.set(null);
   }
 }
