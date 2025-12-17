@@ -2,32 +2,32 @@ import { Component, input, output, signal } from '@angular/core';
 import { TranslationUnit } from '../../models/translation-unit.model';
 
 @Component({
-    selector: 'app-translation-table',
-    standalone: true,
-    template: `
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" class="px-6 py-3 w-1/6">ID</th>
-            <th scope="col" class="px-6 py-3 w-1/3">Source</th>
-            <th scope="col" class="px-6 py-3 w-1/3">Target</th>
-            <th scope="col" class="px-6 py-3 w-1/6">Notes</th>
+  selector: 'app-translation-table',
+  standalone: true,
+  template: `
+    <div class="relative w-full overflow-auto">
+      <table class="w-full caption-bottom text-sm">
+        <thead class="[&_tr]:border-b">
+          <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/6">ID</th>
+            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/3 text-foreground">Source</th>
+            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/3 text-foreground">Target</th>
+            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/6">Notes</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="[&_tr:last-child]:border-0">
           @for (unit of units(); track unit.id) {
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <td class="px-6 py-4 font-mono text-xs break-all">
+            <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+              <td class="p-4 align-middle font-mono text-xs break-all text-muted-foreground">
                 {{ unit.id }}
               </td>
-              <td class="px-6 py-4">
+              <td class="p-4 align-middle text-foreground">
                 {{ unit.source }}
               </td>
-              <td class="px-6 py-4">
+              <td class="p-4 align-middle">
                 @if (editingId() === unit.id) {
                   <textarea 
-                    class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                    class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" 
                     [value]="unit.target"
                     (blur)="onSave(unit.id, $any($event.target).value)"
                     (keydown.enter)="$event.preventDefault(); $any($event.target).blur()"
@@ -36,85 +36,81 @@ import { TranslationUnit } from '../../models/translation-unit.model';
                   ></textarea>
                 } @else {
                   <div 
-                    class="cursor-pointer min-h-[20px] p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded border border-transparent hover:border-gray-300"
+                    class="cursor-pointer min-h-[40px] rounded-md border border-transparent px-3 py-2 hover:bg-accent hover:text-accent-foreground text-foreground"
                     (click)="editingId.set(unit.id)"
-                    [class.text-gray-400]="!unit.target"
+                    [class.text-muted-foreground]="!unit.target"
                     [class.italic]="!unit.target"
                   >
                     {{ unit.target || 'Click to translate...' }}
                   </div>
                 }
               </td>
-              <td class="px-6 py-4 text-xs text-gray-400">
+              <td class="p-4 align-middle text-xs text-muted-foreground">
                 {{ unit.note }}
               </td>
             </tr>
           } @empty {
              <tr>
-              <td colspan="4" class="px-6 py-4 text-center">No translations found</td>
+              <td colspan="4" class="p-4 text-center text-muted-foreground">No translations found</td>
             </tr>
           }
         </tbody>
       </table>
     </div>
 
-    <!-- Simple Pagination Controls -->
-    <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-      <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-        Showing <span class="font-semibold text-gray-900 dark:text-white">{{ (pageIndex() * pageSize()) + 1 }}-{{ min((pageIndex() + 1) * pageSize(), total()) }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ total() }}</span>
-      </span>
-      <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-        <li>
-          <button 
-            (click)="prevPage()"
-            [disabled]="pageIndex() === 0"
-            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50"
-          >
-            Previous
-          </button>
-        </li>
-        <li>
-          <button 
-            (click)="nextPage()"
-            [disabled]="(pageIndex() + 1) * pageSize() >= total()"
-            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50"
-          >
-            Next
-          </button>
-        </li>
-      </ul>
-    </nav>
+    <!-- Pagination Controls -->
+    <div class="flex items-center justify-end space-x-2 py-4">
+      <div class="flex-1 text-sm text-muted-foreground text-foreground">
+        Showing <span class="font-medium text-foreground">{{ (pageIndex() * pageSize()) + 1 }}</span> to <span class="font-medium text-foreground">{{ min((pageIndex() + 1) * pageSize(), total()) }}</span> of <span class="font-medium text-foreground">{{ total() }}</span> entries
+      </div>
+      <div class="space-x-2">
+        <button
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-4 w-24"
+          (click)="prevPage()"
+          [disabled]="pageIndex() === 0"
+        >
+          Previous
+        </button>
+        <button
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-4 w-24"
+          (click)="nextPage()"
+          [disabled]="(pageIndex() + 1) * pageSize() >= total()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
   `
 })
 export class TranslationTableComponent {
-    units = input.required<TranslationUnit[]>();
-    total = input.required<number>();
-    pageIndex = input.required<number>();
-    pageSize = input.required<number>();
+  units = input.required<TranslationUnit[]>();
+  total = input.required<number>();
+  pageIndex = input.required<number>();
+  pageSize = input.required<number>();
 
-    pageChange = output<number>();
-    unitUpdate = output<{ id: string, target: string }>();
+  pageChange = output<number>();
+  unitUpdate = output<{ id: string, target: string }>();
 
-    editingId = signal<string | null>(null);
+  editingId = signal<string | null>(null);
 
-    min(a: number, b: number) {
-        return Math.min(a, b);
+  min(a: number, b: number) {
+    return Math.min(a, b);
+  }
+
+  prevPage() {
+    if (this.pageIndex() > 0) {
+      this.pageChange.emit(this.pageIndex() - 1);
     }
+  }
 
-    prevPage() {
-        if (this.pageIndex() > 0) {
-            this.pageChange.emit(this.pageIndex() - 1);
-        }
+  nextPage() {
+    if ((this.pageIndex() + 1) * this.pageSize() < this.total()) {
+      this.pageChange.emit(this.pageIndex() + 1);
     }
+  }
 
-    nextPage() {
-        if ((this.pageIndex() + 1) * this.pageSize() < this.total()) {
-            this.pageChange.emit(this.pageIndex() + 1);
-        }
-    }
-
-    onSave(id: string, value: string) {
-        this.unitUpdate.emit({ id, target: value });
-        this.editingId.set(null);
-    }
+  onSave(id: string, value: string) {
+    this.unitUpdate.emit({ id, target: value });
+    this.editingId.set(null);
+  }
 }
