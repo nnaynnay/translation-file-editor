@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/common';
       <!-- Header -->
       <header class="flex-none border-b px-6 py-4 flex justify-between items-center bg-background z-10">
         <div>
-          <h1 class="text-2xl font-bold tracking-tight text-foreground">XLIFF Editor</h1>
+          <h1 class="text-2xl font-bold tracking-tight text-foreground">Translation File Editor</h1>
           @if (fileName()) {
             <p class="text-sm text-muted-foreground mt-1">Editing: {{ fileName() }}</p>
           }
