@@ -76,22 +76,144 @@
         <source>Delete</source>
         <target>刪除</target>
       </trans-unit>
-    </body>
-  </file>
-  <file source-language="en" target-language="ja" datatype="plaintext" original="sample-app-strings">
-    <body>
-      <trans-unit id="welcome.title" resname="welcome.title">
-        <source>Welcome to our app</source>
-        <target>アプリへようこそ</target>
+
+      <!-- Generated Items for Pagination Testing -->
+      <trans-unit id="item.1" resname="item.1">
+        <source>Item 1</source>
+        <target>項目 1</target>
       </trans-unit>
-      <trans-unit id="welcome.subtitle" resname="welcome.subtitle">
-        <source>Get started in seconds.</source>
-        <target>すぐに始められます。</target>
+      <trans-unit id="item.2" resname="item.2">
+         <source>Item 2</source>
+         <target>項目 2</target>
       </trans-unit>
-      <trans-unit id="button.continue" resname="button.continue">
-        <source>Continue</source>
-        <target>続ける</target>
+      <trans-unit id="item.3" resname="item.3">
+         <source>Item 3</source>
+         <target>項目 3</target>
       </trans-unit>
+      <trans-unit id="item.4" resname="item.4">
+         <source>Item 4</source>
+         <target>項目 4</target>
+      </trans-unit>
+      <trans-unit id="item.5" resname="item.5">
+         <source>Item 5</source>
+         <target>項目 5</target>
+      </trans-unit>
+      <trans-unit id="item.6" resname="item.6">
+         <source>Item 6</source>
+         <target>項目 6</target>
+      </trans-unit>
+      <trans-unit id="item.7" resname="item.7">
+         <source>Item 7</source>
+         <target>項目 7</target>
+      </trans-unit>
+      <trans-unit id="item.8" resname="item.8">
+         <source>Item 8</source>
+         <target>項目 8</target>
+      </trans-unit>
+      <trans-unit id="item.9" resname="item.9">
+         <source>Item 9</source>
+         <target>項目 9</target>
+      </trans-unit>
+      <trans-unit id="item.10" resname="item.10">
+         <source>Item 10</source>
+         <target>項目 10</target>
+      </trans-unit>
+      <trans-unit id="item.11" resname="item.11">
+         <source>Item 11</source>
+         <target>項目 11</target>
+      </trans-unit>
+      <trans-unit id="item.12" resname="item.12">
+         <source>Item 12</source>
+         <target>項目 12</target>
+      </trans-unit>
+      <trans-unit id="item.13" resname="item.13">
+         <source>Item 13</source>
+         <target>項目 13</target>
+      </trans-unit>
+      <trans-unit id="item.14" resname="item.14">
+         <source>Item 14</source>
+         <target>項目 14</target>
+      </trans-unit>
+      <trans-unit id="item.15" resname="item.15">
+         <source>Item 15</source>
+         <target>項目 15</target>
+      </trans-unit>
+      <trans-unit id="item.16" resname="item.16">
+         <source>Item 16</source>
+      </trans-unit>
+      <trans-unit id="item.17" resname="item.17">
+         <source>Item 17</source>
+      </trans-unit>
+      <trans-unit id="item.18" resname="item.18">
+         <source>Item 18</source>
+      </trans-unit>
+      <trans-unit id="item.19" resname="item.19">
+         <source>Item 19</source>
+      </trans-unit>
+      <trans-unit id="item.20" resname="item.20">
+         <source>Item 20</source>
+      </trans-unit>
+      <trans-unit id="item.21" resname="item.21">
+         <source>Item 21</source>
+      </trans-unit>
+      <trans-unit id="item.22" resname="item.22">
+         <source>Item 22</source>
+      </trans-unit>
+      <trans-unit id="item.23" resname="item.23">
+         <source>Item 23</source>
+      </trans-unit>
+      <trans-unit id="item.24" resname="item.24">
+         <source>Item 24</source>
+      </trans-unit>
+      <trans-unit id="item.25" resname="item.25">
+         <source>Item 25</source>
+      </trans-unit>
+      <trans-unit id="item.26" resname="item.26">
+         <source>Item 26</source>
+      </trans-unit>
+      <trans-unit id="item.27" resname="item.27">
+         <source>Item 27</source>
+      </trans-unit>
+      <trans-unit id="item.28" resname="item.28">
+         <source>Item 28</source>
+      </trans-unit>
+      <trans-unit id="item.29" resname="item.29">
+         <source>Item 29</source>
+      </trans-unit>
+      <trans-unit id="item.30" resname="item.30">
+         <source>Item 30</source>
+      </trans-unit>
+      <trans-unit id="item.31" resname="item.31">
+         <source>Item 31</source>
+      </trans-unit>
+      <trans-unit id="item.32" resname="item.32">
+         <source>Item 32</source>
+      </trans-unit>
+      <trans-unit id="item.33" resname="item.33">
+         <source>Item 33</source>
+      </trans-unit>
+      <trans-unit id="item.34" resname="item.34">
+         <source>Item 34</source>
+      </trans-unit>
+      <trans-unit id="item.35" resname="item.35">
+         <source>Item 35</source>
+      </trans-unit>
+      <trans-unit id="item.36" resname="item.36">
+         <source>Item 36</source>
+      </trans-unit>
+      <trans-unit id="item.37" resname="item.37">
+         <source>Item 37</source>
+      </trans-unit>
+      <trans-unit id="item.38" resname="item.38">
+         <source>Item 38</source>
+      </trans-unit>
+      <trans-unit id="item.39" resname="item.39">
+         <source>Item 39</source>
+      </trans-unit>
+      <trans-unit id="item.40" resname="item.40">
+         <source>Item 40</source>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

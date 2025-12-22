@@ -6,7 +6,7 @@ export class Xliff2Parser implements TranslationParser {
         return content.includes('version="2.0"') && content.includes('presentation="libRExo"'); // Basic check, can be more robust
     }
 
-    parse(xmlContent: string): { document: Document; units: TranslationUnit[]; sourceLang?: string; targetLang?: string } {
+    parse(xmlContent: string) {
         const parser = new DOMParser();
         const document = parser.parseFromString(xmlContent, 'text/xml');
 
@@ -44,7 +44,7 @@ export class Xliff2Parser implements TranslationParser {
             });
         });
 
-        return { document, units, sourceLang, targetLang };
+        return { document, units, sourceLang, targetLang, documentFormat: 'xliff 2.0' };
     }
 
     updateUnit(document: Document, id: string, targetValue: string): void {

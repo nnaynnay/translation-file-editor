@@ -6,7 +6,7 @@ export class Xliff12Parser implements TranslationParser {
         return content.includes('urn:oasis:names:tc:xliff:document:1.2');
     }
 
-    parse(xmlContent: string): { document: Document; units: TranslationUnit[]; sourceLang?: string; targetLang?: string } {
+    parse(xmlContent: string) {
         const parser = new DOMParser();
         const document = parser.parseFromString(xmlContent, 'text/xml');
 
@@ -42,7 +42,7 @@ export class Xliff12Parser implements TranslationParser {
             });
         });
 
-        return { document, units, sourceLang, targetLang };
+        return { document, units, sourceLang, targetLang, documentFormat: 'xliff 1.2' };
     }
 
     updateUnit(document: Document, id: string, targetValue: string): void {
