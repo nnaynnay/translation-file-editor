@@ -16,25 +16,77 @@ import { DOCUMENT, DecimalPipe } from '@angular/common';
         <div class="flex items-center gap-4">
           <img src="./assets/language.svg" alt="Language" class="w-6 h-6">  
           <div class="flex flex-col gap-0">
-            <h1 class="text-2xl font-bold tracking-tight text-foreground">Translation File Editor</h1>
-            <p class="text-sm text-muted-foreground">A simple editor for XLIFF 1.2, XLIFF 2, and JSON</p>         
+            @if (fileName()) {
+               <h1 class="text-lg font-bold tracking-tight text-foreground leading-none">{{ fileName() }}</h1>
+               <div class="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                  <span class="uppercase font-mono bg-muted px-1.5 py-0.5 rounded text-[10px] tracking-wider font-medium">XLIFF</span>
+                  <span>{{ sourceLang() || '?' }}</span>
+                  <span class="text-[10px]">➜</span>
+                  <span>{{ targetLang() || '?' }}</span>
+               </div>
+            } @else {
+               <h1 class="text-2xl font-bold tracking-tight text-foreground">Translation File Editor</h1>
+               <p class="text-sm text-muted-foreground">A simple editor for XLIFF 1.2, XLIFF 2, and JSON</p>         
+            }
           </div>
         </div>
         
         @if (fileName()) {
-          <div class="flex gap-2">
-             <button 
-              (click)="exportFile('xliff')"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
-            >
-              Export
-            </button>
-            <button 
-              (click)="reset()"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-destructive hover:text-destructive-foreground h-9 px-4 py-2"
-            >
-              Close
-            </button>
+          <div class="flex items-center gap-6">
+            <!-- Stats -->
+            <div class="flex items-center gap-6">
+               <div class="flex gap-4 text-sm">
+                  <div class="flex flex-col items-center">
+                     <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Total</span>
+                     <span class="font-bold text-foreground">{{ stats().total }}</span>
+                  </div>
+                  <div class="flex flex-col items-center">
+                     <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Translated</span>
+                     <span class="font-bold text-green-600 dark:text-green-400">{{ stats().translated }}</span>
+                  </div>
+                  <div class="flex flex-col items-center">
+                     <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Missing</span>
+                     <span class="font-bold text-orange-600 dark:text-orange-400">{{ stats().missing }}</span>
+                  </div>
+                  <div class="flex flex-col items-center">
+                     <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Changed</span>
+                     <span class="font-bold text-blue-600 dark:text-blue-400">{{ stats().changed }}</span>
+                  </div>
+               </div>
+               
+               <!-- Progress -->
+               <div class="flex flex-col items-end min-w-[80px]">
+                  <div class="flex items-baseline gap-1 mb-1">
+                     <span class="text-xl font-bold tracking-tight">{{ (stats().translated / stats().total) * 100 | number:'1.0-0' }}</span>
+                     <span class="text-xs font-medium text-muted-foreground">%</span>
+                  </div>
+                  <div class="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                     <div 
+                        class="h-full bg-primary transition-all duration-500 ease-out"
+                        [style.width.%]="(stats().translated / stats().total) * 100"
+                     ></div>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Separator -->
+            <div class="h-8 w-px bg-border"></div>
+
+            <!-- Buttons -->
+            <div class="flex gap-2">
+               <button 
+                (click)="exportFile('xliff')"
+                class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
+              >
+                Export
+              </button>
+              <button 
+                (click)="reset()"
+                class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-destructive hover:text-destructive-foreground h-9 px-4 py-2"
+              >
+                Close
+              </button>
+            </div>
           </div>
         }
       </header>
@@ -49,65 +101,7 @@ import { DOCUMENT, DecimalPipe } from '@angular/common';
           <!-- Left Pane: Table & Toolbar -->
           <div class="flex-1 flex flex-col min-w-0">
              
-             <!-- Summary Section -->
-             <div class="flex-none px-6 pt-4 pb-2 border-b">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="flex items-center gap-4">
-                     <div class="p-2 bg-primary/10 rounded-lg">
-                        <img src="./assets/language.svg" alt="File" class="w-6 h-6 text-primary">
-                     </div>
-                     <div>
-                        <h2 class="text-base font-semibold tracking-tight leading-none">{{ fileName() }}</h2>
-                        <div class="flex items-center gap-2 text-xs text-muted-foreground mt-1.5">
-                           <span class="uppercase font-mono bg-muted px-1.5 py-0.5 rounded text-[10px] tracking-wider font-medium">XLIFF</span>
-                           <span>{{ sourceLang() || '?' }}</span>
-                           <span class="text-[10px]">➜</span>
-                           <span>{{ targetLang() || '?' }}</span>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class="flex items-center gap-8">
-                     <!-- Stats Grid -->
-                     <div class="flex gap-6 text-sm">
-                        <div class="flex flex-col items-center">
-                           <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Total</span>
-                           <span class="font-bold text-foreground">{{ stats().total }}</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                           <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Translated</span>
-                           <span class="font-bold text-green-600 dark:text-green-400">{{ stats().translated }}</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                           <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Missing</span>
-                           <span class="font-bold text-orange-600 dark:text-orange-400">{{ stats().missing }}</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                           <span class="text-muted-foreground text-[10px] uppercase font-bold tracking-wider mb-0.5">Changed</span>
-                           <span class="font-bold text-blue-600 dark:text-blue-400">{{ stats().changed }}</span>
-                        </div>
-                     </div>
-                     
-                     <!-- Progress donut or simple percentage? Let's stick to bar for compactness but maybe put it below? 
-                          Or keeping the large percentage? User said "more compact". 
-                          Let's try a compact side block for progress. 
-                     -->
-                     <div class="flex flex-col items-end min-w-[100px]">
-                        <div class="flex items-baseline gap-1 mb-1">
-                           <span class="text-2xl font-bold tracking-tight">{{ (stats().translated / stats().total) * 100 | number:'1.0-0' }}</span>
-                           <span class="text-sm font-medium text-muted-foreground">%</span>
-                        </div>
-                        <div class="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                           <div 
-                              class="h-full bg-primary transition-all duration-500 ease-out"
-                              [style.width.%]="(stats().translated / stats().total) * 100"
-                           ></div>
-                        </div>
-                     </div>
-                  </div>
-                </div>
-             </div>
-
+             
              <!-- Toolbar -->
              <div class="flex-none p-4 flex items-center justify-between gap-4">
                 <!-- Search -->
