@@ -13,11 +13,13 @@ import { DOCUMENT } from '@angular/common';
     <div class="flex flex-col h-screen bg-background text-foreground overflow-hidden">
       <!-- Header -->
       <header class="flex-none border-b px-6 py-4 flex justify-between items-center bg-background z-10">
-        <div>
+        <div class="flex items-center gap-2">
+          <img src="./assets/language.svg" alt="Language" class="w-6 h-6">  
           <h1 class="text-2xl font-bold tracking-tight text-foreground">Translation File Editor</h1>
-          @if (fileName()) {
+          <p class="text-sm text-muted-foreground mt-1">A simple editor for XLIFF 1.2, XLIFF 2, and JSON</p>
+          <!-- @if (fileName()) {
             <p class="text-sm text-muted-foreground mt-1">Editing: {{ fileName() }}</p>
-          }
+          } -->
         </div>
         
         @if (fileName()) {
@@ -54,7 +56,7 @@ import { DOCUMENT } from '@angular/common';
           <!-- Left Pane: Table & Toolbar -->
           <div class="flex-1 flex flex-col min-w-0">
              <!-- Toolbar -->
-             <div class="flex-none p-4 border-b flex items-center justify-between gap-4">
+             <div class="flex-none p-4 flex items-center justify-between gap-4">
                 <!-- Search -->
                 <div class="relative w-72">
                   <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -76,40 +78,66 @@ import { DOCUMENT } from '@angular/common';
                   </kbd>
                 </div>
 
-                <!-- Tabs -->
-                <div class="flex space-x-1 rounded-lg bg-muted p-1">
-                  <button
-                    (click)="setFilter('all')"
-                    [class.bg-background]="filterStatus() === 'all'"
-                    [class.shadow-sm]="filterStatus() === 'all'"
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-foreground"
-                  >
-                    Total <span class="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-muted-foreground/20">{{ stats().total }}</span>
-                  </button>
-                  <button
-                    (click)="setFilter('translated')"
-                    [class.bg-background]="filterStatus() === 'translated'"
-                    [class.shadow-sm]="filterStatus() === 'translated'"
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-foreground"
-                  >
-                    Translated <span class="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-green-500/20 text-green-700 dark:text-green-400">{{ stats().translated }}</span>
-                  </button>
-                  <button
-                    (click)="setFilter('missing')"
-                    [class.bg-background]="filterStatus() === 'missing'"
-                    [class.shadow-sm]="filterStatus() === 'missing'"
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-foreground"
-                  >
-                    Missing <span class="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-orange-500/20 text-orange-700 dark:text-orange-400">{{ stats().missing }}</span>
-                  </button>
-                  <button
-                    (click)="setFilter('changed')"
-                    [class.bg-background]="filterStatus() === 'changed'"
-                    [class.shadow-sm]="filterStatus() === 'changed'"
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-foreground"
-                  >
-                    Changed <span class="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-400">{{ stats().changed }}</span>
-                  </button>
+                <!-- Filter Dropdown -->
+                <div class="flex items-center gap-2 relative">
+                  <span class="text-sm font-medium text-muted-foreground">Show</span>
+                  
+                  <!-- Backdrop -->
+                  @if (dropdownOpen()) {
+                    <div class="fixed inset-0 z-30" (click)="closeDropdown()"></div>
+                  }
+
+                  <div class="relative z-40">
+                    <button 
+                      (click)="toggleDropdown()"
+                      class="flex h-9 w-[200px] items-center justify-between rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <span class="truncate">
+                        @switch (filterStatus()) {
+                          @case ('all') { Total ({{ stats().total }}) }
+                          @case ('translated') { Translated ({{ stats().translated }}) }
+                          @case ('missing') { Missing ({{ stats().missing }}) }
+                          @case ('changed') { Changed ({{ stats().changed }}) }
+                        }
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 opacity-50"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+
+                    @if (dropdownOpen()) {
+                      <div class="absolute right-0 top-full mt-1 w-[200px] rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2">
+                        <div class="p-1">
+                          <button
+                            (click)="setFilter('all')"
+                            class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                            [class.bg-accent]="filterStatus() === 'all'"
+                          >
+                           Total ({{ stats().total }})
+                          </button>
+                          <button
+                            (click)="setFilter('translated')"
+                            class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                            [class.bg-accent]="filterStatus() === 'translated'"
+                          >
+                           Translated ({{ stats().translated }})
+                          </button>
+                          <button
+                            (click)="setFilter('missing')"
+                            class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                            [class.bg-accent]="filterStatus() === 'missing'"
+                          >
+                           Missing ({{ stats().missing }})
+                          </button>
+                          <button
+                            (click)="setFilter('changed')"
+                            class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                            [class.bg-accent]="filterStatus() === 'changed'"
+                          >
+                           Changed ({{ stats().changed }})
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  </div>
                 </div>
              </div>
 
@@ -158,6 +186,7 @@ export class XliffEditorComponent {
   pageIndex = signal(0);
   pageSize = signal(10);
   selectedUnitId = signal<string | null>(null);
+  dropdownOpen = signal(false);
 
   // Pagination Logic
   paginatedUnits = computed(() => {
@@ -210,10 +239,19 @@ export class XliffEditorComponent {
     this.selectedUnitId.set(null);
   }
 
+  toggleDropdown() {
+    this.dropdownOpen.update(v => !v);
+  }
+
+  closeDropdown() {
+    this.dropdownOpen.set(false);
+  }
+
   setFilter(status: 'all' | 'translated' | 'missing' | 'changed') {
     this.state.filterStatus.set(status);
     this.pageIndex.set(0);
     this.selectedUnitId.set(null);
+    this.closeDropdown();
   }
 
   selectUnit(id: string) {
