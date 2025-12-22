@@ -23,7 +23,7 @@ export class XliffParserService {
     // OR we detect again (less efficient but stateless).
     // Given the state service holds the singleton parser service, stateful is okay for this single-file editor.
 
-    parse(xmlContent: string): { document: Document; units: TranslationUnit[] } {
+    parse(xmlContent: string): { document: Document; units: TranslationUnit[]; sourceLang?: string; targetLang?: string } {
         // Find suitable parser
         const parser = this.parsers.find(p => p.canParse(xmlContent));
         if (!parser) {

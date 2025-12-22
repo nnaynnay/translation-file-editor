@@ -6,7 +6,7 @@ export class Xliff12Parser implements TranslationParser {
         return content.includes('urn:oasis:names:tc:xliff:document:1.2');
     }
 
-    parse(xmlContent: string): { document: Document; units: TranslationUnit[] } {
+    parse(xmlContent: string): { document: Document; units: TranslationUnit[]; sourceLang?: string; targetLang?: string } {
         const parser = new DOMParser();
         const document = parser.parseFromString(xmlContent, 'text/xml');
 
@@ -17,6 +17,10 @@ export class Xliff12Parser implements TranslationParser {
 
         const units: TranslationUnit[] = [];
         const transUnits = document.querySelectorAll('trans-unit');
+
+        const fileNode = document.querySelector('file');
+        const sourceLang = fileNode?.getAttribute('source-language') || undefined;
+        const targetLang = fileNode?.getAttribute('target-language') || undefined;
 
         transUnits.forEach((node) => {
             const id = node.getAttribute('id') || '';
@@ -38,7 +42,7 @@ export class Xliff12Parser implements TranslationParser {
             });
         });
 
-        return { document, units };
+        return { document, units, sourceLang, targetLang };
     }
 
     updateUnit(document: Document, id: string, targetValue: string): void {

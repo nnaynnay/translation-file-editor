@@ -11,6 +11,8 @@ export class XliffStateService {
     // State Signals
     readonly rawDocument = signal<Document | null>(null);
     readonly fileName = signal<string | null>(null);
+    readonly sourceLang = signal<string | undefined>(undefined);
+    readonly targetLang = signal<string | undefined>(undefined);
     readonly units = signal<TranslationUnit[]>([]);
     readonly modifiedIds = signal<Set<string>>(new Set());
 
@@ -62,6 +64,8 @@ export class XliffStateService {
 
         this.rawDocument.set(result.document);
         this.units.set(result.units);
+        this.sourceLang.set(result.sourceLang);
+        this.targetLang.set(result.targetLang);
         this.fileName.set(file.name);
         this.modifiedIds.set(new Set()); // Reset modified tracking
         this.filterStatus.set('all');

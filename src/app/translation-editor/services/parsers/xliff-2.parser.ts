@@ -6,7 +6,7 @@ export class Xliff2Parser implements TranslationParser {
         return content.includes('version="2.0"') && content.includes('presentation="libRExo"'); // Basic check, can be more robust
     }
 
-    parse(xmlContent: string): { document: Document; units: TranslationUnit[] } {
+    parse(xmlContent: string): { document: Document; units: TranslationUnit[]; sourceLang?: string; targetLang?: string } {
         const parser = new DOMParser();
         const document = parser.parseFromString(xmlContent, 'text/xml');
 
@@ -17,6 +17,10 @@ export class Xliff2Parser implements TranslationParser {
 
         const units: TranslationUnit[] = [];
         const unitNodes = document.querySelectorAll('unit');
+
+        const xliffNode = document.querySelector('xliff');
+        const sourceLang = xliffNode?.getAttribute('srcLang') || undefined;
+        const targetLang = xliffNode?.getAttribute('trgLang') || undefined;
 
         unitNodes.forEach((node) => {
             const id = node.getAttribute('id') || '';
@@ -40,7 +44,7 @@ export class Xliff2Parser implements TranslationParser {
             });
         });
 
-        return { document, units };
+        return { document, units, sourceLang, targetLang };
     }
 
     updateUnit(document: Document, id: string, targetValue: string): void {

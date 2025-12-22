@@ -3,12 +3,12 @@ import { XliffStateService } from '../../services/xliff-state.service';
 import { FileUploadComponent } from '../../ui/file-upload/file-upload.component';
 import { TranslationTableComponent } from '../../ui/translation-table/translation-table.component';
 import { TranslationDetailComponent } from '../../ui/translation-detail/translation-detail.component';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-xliff-editor',
   standalone: true,
-  imports: [FileUploadComponent, TranslationTableComponent, TranslationDetailComponent],
+  imports: [FileUploadComponent, TranslationTableComponent, TranslationDetailComponent, DecimalPipe],
   template: `
     <div class="flex flex-col h-screen bg-background text-foreground overflow-hidden">
       <!-- Header -->
@@ -55,6 +55,40 @@ import { DOCUMENT } from '@angular/common';
         } @else {
           <!-- Left Pane: Table & Toolbar -->
           <div class="flex-1 flex flex-col min-w-0">
+             
+             <!-- Summary Section -->
+             <div class="flex-none p-6 pb-0 space-y-4">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h2 class="text-lg font-semibold tracking-tight">{{ fileName() }}</h2>
+                    <div class="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                      <span class="uppercase font-mono bg-muted px-1.5 rounded text-xs">XLIFF</span>
+                      <span>•</span>
+                      <span>{{ sourceLang() || '?' }} <span class="text-xs">→</span> {{ targetLang() || '?' }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="flex gap-6 text-sm">
+                     <div class="flex flex-col items-end">
+                       <span class="text-muted-foreground text-xs uppercase font-medium">Progress</span>
+                       <span class="font-medium">{{ (stats().translated / stats().total) * 100 | number:'1.0-0' }}%</span>
+                     </div>
+                     <div class="flex flex-col items-end">
+                       <span class="text-muted-foreground text-xs uppercase font-medium">Units</span>
+                       <span class="font-medium">{{ stats().total }}</span>
+                     </div>
+                  </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                  <div 
+                    class="h-full bg-primary transition-all duration-500 ease-out"
+                    [style.width.%]="(stats().translated / stats().total) * 100"
+                  ></div>
+                </div>
+             </div>
+
              <!-- Toolbar -->
              <div class="flex-none p-4 flex items-center justify-between gap-4">
                 <!-- Search -->
@@ -179,6 +213,8 @@ export class XliffEditorComponent {
   searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   fileName = this.state.fileName;
+  sourceLang = this.state.sourceLang;
+  targetLang = this.state.targetLang;
   filterQuery = this.state.filterQuery;
   filterStatus = this.state.filterStatus;
   stats = this.state.totalStats;
