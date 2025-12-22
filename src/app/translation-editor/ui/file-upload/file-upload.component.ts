@@ -5,7 +5,7 @@ import { Component, output, signal } from '@angular/core';
   standalone: true,
   template: `
     <div 
-      class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent/50 transition-colors"
+      class="flex flex-col items-center justify-center w-full h-64 border-2 border-dotted rounded-lg cursor-pointer bg-background hover:bg-accent/50 transition-colors"
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
       (drop)="onDrop($event)"

@@ -22,17 +22,27 @@ import { TranslationUnit } from '../../models/translation-unit.model';
               [class.bg-muted]="selectedId() === unit.id"
               (click)="unitSelect.emit(unit.id)"
             >
-              <td class="p-4 align-middle font-mono text-xs break-all text-muted-foreground">
-                {{ unit.id }}
-              </td>
-              <td class="p-4 align-middle text-foreground">
-                {{ unit.source }}
-              </td>
-              <td class="p-4 align-middle text-foreground">
-                 <div [class.text-muted-foreground]="!unit.target" [class.italic]="!unit.target">
-                    {{ unit.target || 'Empty' }}
-                 </div>
-              </td>
+            <td class="p-4 align-middle font-mono text-xs break-all text-muted-foreground">
+              {{ unit.id }}
+            </td>
+            <td 
+              class="p-4 align-middle text-foreground transition-all duration-200"
+              [class.whitespace-nowrap]="viewMode() === 'compact'"
+              [class.truncate]="viewMode() === 'compact'"
+              [class.max-w-[300px]]="viewMode() === 'compact'"
+            >
+              {{ unit.source }}
+            </td>
+            <td 
+              class="p-4 align-middle text-foreground transition-all duration-200"
+              [class.whitespace-nowrap]="viewMode() === 'compact'"
+              [class.truncate]="viewMode() === 'compact'"
+              [class.max-w-[300px]]="viewMode() === 'compact'"
+            >
+               <div [class.text-muted-foreground]="!unit.target" [class.italic]="!unit.target" [class.truncate]="viewMode() === 'compact'">
+                  {{ unit.target || 'Empty' }}
+               </div>
+            </td>
               <td class="p-4 align-middle text-xs text-muted-foreground">
                 {{ unit.note }}
               </td>
@@ -75,6 +85,7 @@ export class TranslationTableComponent {
   total = input.required<number>();
   pageIndex = input.required<number>();
   pageSize = input.required<number>();
+  viewMode = input<'compact' | 'spacious'>('spacious');
   selectedId = input<string | null>(null);
 
   pageChange = output<number>();
