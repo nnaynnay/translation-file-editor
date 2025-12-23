@@ -75,6 +75,7 @@ import { TranslationUnit } from '../../models/translation-unit.model';
             class="flex min-h-[150px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             [value]="unit().target"
             (input)="onInput($event)"
+            (keydown.escape)="targetInput.blur()"
             placeholder="Enter translation..."
           ></textarea>
         </div>
@@ -97,15 +98,14 @@ export class TranslationDetailComponent {
 
   // Simple copy feedback state could be added here if needed, keeping it simple for now.
 
+  focus() {
+    setTimeout(() => {
+      this.targetInput()?.nativeElement.focus();
+    }, 0);
+  }
+
   constructor() {
-    effect(() => {
-      // Focus the textarea whenever the unit changes
-      const u = this.unit();
-      // setTimeout to ensure DOM is ready
-      setTimeout(() => {
-        this.targetInput()?.nativeElement.focus();
-      });
-    });
+    // Aggressive focus removed to allow table navigation via keyboard
   }
 
   onInput(event: Event) {

@@ -17,6 +17,7 @@ export class XliffEditorComponent {
   private document = inject(DOCUMENT);
 
   searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  detailView = viewChild(TranslationDetailComponent);
 
   fileName = this.state.fileName;
   sourceLang = this.state.sourceLang;
@@ -77,21 +78,66 @@ export class XliffEditorComponent {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
           e.preventDefault();
           this.searchInput()?.nativeElement.focus();
+          return;
         }
 
-        // Pagination: Arrows (if not in input)
         const isEditing = (e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA';
+
         if (!isEditing) {
+          // Pagination: Arrows
           if (e.key === 'ArrowLeft') {
             this.changePage(this.pageIndex() - 1);
+            return;
           } else if (e.key === 'ArrowRight') {
             this.changePage(this.pageIndex() + 1);
+            return;
+          }
+
+          // Close detail view: Escape
+          if (e.key === 'Escape' && this.selectedUnitId()) {
+            this.selectedUnitId.set(null);
+            return;
+          }
+
+          // Table Selection: Up/Down
+          const units = this.paginatedUnits();
+          if (units.length > 0) {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              this.navigateSelection(1);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              this.navigateSelection(-1);
+            } else if (e.key === 'Enter' && this.selectedUnitId()) {
+              e.preventDefault();
+              this.selectUnit(this.selectedUnitId()!, true);
+            }
           }
         }
       };
       document.addEventListener('keydown', handleKeydown);
       onCleanup(() => document.removeEventListener('keydown', handleKeydown));
     });
+  }
+
+  private navigateSelection(direction: number) {
+    const units = this.paginatedUnits();
+    const currentId = this.selectedUnitId();
+
+    if (!currentId) {
+      this.selectUnit(units[0].id);
+      return;
+    }
+
+    const currentIndex = units.findIndex(u => u.id === currentId);
+    let nextIndex = currentIndex + direction;
+
+    if (nextIndex >= 0 && nextIndex < units.length) {
+      this.selectUnit(units[nextIndex].id);
+
+      // Auto-scroll logic could be added here if the table was very long and scrollable
+      // but the units are paginated (10 per page), so they should be visible.
+    }
   }
 
   changePage(newIndex: number) {
@@ -107,6 +153,15 @@ export class XliffEditorComponent {
     this.state.filterQuery.set(val);
     this.pageIndex.set(0);
     this.selectedUnitId.set(null);
+  }
+
+  onSearchEnter(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.blur();
+    const units = this.paginatedUnits();
+    if (units.length > 0) {
+      this.selectUnit(units[0].id);
+    }
   }
 
   toggleDropdown() {
@@ -132,8 +187,12 @@ export class XliffEditorComponent {
     this.closeDropdown();
   }
 
-  selectUnit(id: string) {
+  selectUnit(id: string, shouldFocus = false) {
     this.selectedUnitId.set(id);
+    if (shouldFocus) {
+      // Need to wait for change detection to render the new unit if it wasn't visible
+      setTimeout(() => this.detailView()?.focus(), 0);
+    }
   }
 
   onUnitUpdate(event: { id: string, target: string }) {

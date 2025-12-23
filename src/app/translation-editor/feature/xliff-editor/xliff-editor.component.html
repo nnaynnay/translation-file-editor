@@ -124,7 +124,8 @@
                             </svg>
                         </div>
                         <input #searchInput type="text" [value]="filterQuery()" (input)="onSearchInput($event)"
-                            (keydown.escape)="searchInput.blur()"
+                            (keydown.escape)="searchInput.blur()" (keydown.enter)="onSearchEnter($event)"
+                            (keydown.arrowdown)="onSearchEnter($event)"
                             class="flex h-9 w-full rounded-md border border-input bg-background px-3 ps-10 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10"
                             placeholder="Search..." />
                         <kbd
@@ -348,24 +349,56 @@
                     <app-translation-table [units]="paginatedUnits()" [viewMode]="viewMode()"
                         [showIdColumn]="showIdColumn()" [showSourceColumn]="showSourceColumn()"
                         [showTargetColumn]="showTargetColumn()" [showNotesColumn]="showNotesColumn()"
-                        [selectedId]="selectedUnitId()" (unitSelect)="selectUnit($event)" />
+                        [selectedId]="selectedUnitId()" (unitSelect)="selectUnit($event, true)" />
                 </div>
             </div>
 
             <!-- Pagination Footer (Sticky) -->
             <div class="flex-none p-4 bg-background border-t">
                 <div class="flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-2">
-                        <kbd
-                            class="pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-lg font-medium text-muted-foreground flex">
-                            ←
-                        </kbd>
-                        <kbd
-                            class="pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-lg font-medium text-muted-foreground flex">
-                            →
-                        </kbd>
-                        <span
-                            class="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Navigate</span>
+                    <div class="flex items-center gap-6">
+                        <!-- Navigation -->
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1">
+                                <kbd
+                                    class="pointer-events-none h-5 select-none items-center justify-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground flex min-w-[20px]">↑</kbd>
+                                <kbd
+                                    class="pointer-events-none h-5 select-none items-center justify-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground flex min-w-[20px]">↓</kbd>
+                            </div>
+                            <span
+                                class="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Select</span>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="flex items-center gap-2 border-l pl-4">
+                            <div class="flex items-center gap-1">
+                                <kbd
+                                    class="pointer-events-none h-5 select-none items-center justify-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground flex min-w-[20px]">←</kbd>
+                                <kbd
+                                    class="pointer-events-none h-5 select-none items-center justify-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground flex min-w-[20px]">→</kbd>
+                            </div>
+                            <span
+                                class="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Page</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex items-center gap-2 border-l pl-4">
+                            <div class="flex items-center gap-1">
+                                <kbd
+                                    class="pointer-events-none h-5 select-none items-center justify-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground flex min-w-[40px]">Enter</kbd>
+                            </div>
+                            <span
+                                class="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Edit</span>
+                        </div>
+
+                        <div class="flex items-center gap-2 border-l pl-4">
+                            <div class="flex items-center gap-1">
+                                <kbd
+                                    class="pointer-events-none h-5 select-none items-center justify-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground flex min-w-[20px]">Esc</kbd>
+                            </div>
+                            <span
+                                class="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Back</span>
+                        </div>
                     </div>
 
                     <app-pagination [pageIndex]="pageIndex()" [pageSize]="pageSize()" [total]="totalItems()"
