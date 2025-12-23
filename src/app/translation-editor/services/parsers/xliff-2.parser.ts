@@ -27,19 +27,35 @@ export class Xliff2Parser implements TranslationParser {
             const segment = node.querySelector('segment');
             const sourceNode = segment?.querySelector('source');
             const targetNode = segment?.querySelector('target');
-            const noteNode = node.querySelector('notes note'); // XLIFF 2.0 structure for notes is different
 
             const source = sourceNode?.textContent || '';
             const target = targetNode?.textContent || '';
-            const note = noteNode?.textContent || undefined;
-            // XLIFF 2.0 state is usually on the segment or unit, simplistically checking unit or segment
             const state = segment?.getAttribute('state') || undefined;
+
+            const notes: TranslationUnit['notes'] = [];
+            const noteNodes = node.querySelectorAll('notes note');
+            noteNodes.forEach(nn => {
+                const category = nn.getAttribute('category');
+                if (category === 'location') {
+                    notes.push({
+                        type: 'location',
+                        content: nn.textContent || '',
+                        category: 'location'
+                    });
+                } else {
+                    notes.push({
+                        type: 'note',
+                        content: nn.textContent || '',
+                        category: category || undefined
+                    });
+                }
+            });
 
             units.push({
                 id,
                 source,
                 target,
-                note,
+                notes: notes.length > 0 ? notes : undefined,
                 state
             });
         });

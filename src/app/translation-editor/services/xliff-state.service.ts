@@ -43,7 +43,7 @@ export class XliffStateService {
             u.id.toLowerCase().includes(query) ||
             u.source.toLowerCase().includes(query) ||
             u.target.toLowerCase().includes(query) ||
-            (u.note && u.note.toLowerCase().includes(query))
+            (u.notes && u.notes.some(n => n.content.toLowerCase().includes(query)))
         );
     });
 

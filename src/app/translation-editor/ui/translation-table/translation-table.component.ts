@@ -58,8 +58,8 @@ import { TranslationUnit } from '../../models/translation-unit.model';
               </td>
             }
             @if (showNotesColumn()) {
-              <td class="p-4 align-middle text-xs text-muted-foreground">
-                {{ unit.note }}
+              <td class="p-4 align-middle text-xs text-muted-foreground max-w-[200px] truncate" [title]="getNotesSummary(unit)">
+                {{ getNotesSummary(unit) }}
               </td>
             }
             </tr>
@@ -85,4 +85,9 @@ export class TranslationTableComponent {
   selectedId = input<string | null>(null);
 
   unitSelect = output<string>();
+
+  getNotesSummary(unit: TranslationUnit): string {
+    if (!unit.notes || unit.notes.length === 0) return '';
+    return unit.notes.filter(n => n.type === 'note').sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0)).map(n => n.content).join(' | ');
+  }
 }

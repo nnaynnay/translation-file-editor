@@ -26,18 +26,45 @@ export class Xliff12Parser implements TranslationParser {
             const id = node.getAttribute('id') || '';
             const sourceNode = node.querySelector('source');
             const targetNode = node.querySelector('target');
-            const noteNode = node.querySelector('note');
 
             const source = sourceNode?.textContent || '';
             const target = targetNode?.textContent || '';
-            const note = noteNode?.textContent || undefined;
             const state = targetNode?.getAttribute('state') || undefined;
+
+            const notes: TranslationUnit['notes'] = [];
+
+            // 1. Extract context-group (locations)
+            const contextGroups = node.querySelectorAll('context-group[purpose="location"]');
+            contextGroups.forEach(cg => {
+                const sourcefile = cg.querySelector('context[context-type="sourcefile"]')?.textContent || '';
+                const linenumber = cg.querySelector('context[context-type="linenumber"]')?.textContent || '';
+                if (sourcefile) {
+                    notes.push({
+                        type: 'location',
+                        content: `${sourcefile}${linenumber ? ':' + linenumber : ''}`,
+                        sourcefile,
+                        linenumber,
+                        purpose: 'location'
+                    });
+                }
+            });
+
+            // 2. Extract notes
+            const noteNodes = node.querySelectorAll('note');
+            noteNodes.forEach(nn => {
+                notes.push({
+                    type: 'note',
+                    content: nn.textContent || '',
+                    from: nn.getAttribute('from') || undefined,
+                    priority: Number(nn.getAttribute('priority')) || undefined
+                });
+            });
 
             units.push({
                 id,
                 source,
                 target,
-                note,
+                notes: notes.length > 0 ? notes : undefined,
                 state
             });
         });

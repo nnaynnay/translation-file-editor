@@ -1,4 +1,4 @@
-import { Component, input, output, effect, viewChild, ElementRef } from '@angular/core';
+import { Component, input, output, effect, viewChild, ElementRef, computed } from '@angular/core';
 import { TranslationUnit } from '../../models/translation-unit.model';
 
 @Component({
@@ -58,11 +58,40 @@ import { TranslationUnit } from '../../models/translation-unit.model';
           </div>
         </div>
 
-        @if (unit().note) {
-          <div class="space-y-2">
-            <label class="text-xs font-medium text-muted-foreground uppercase tracking-wider">Notes</label>
-            <div class="text-sm text-muted-foreground italic">
-              {{ unit().note }}
+        @if (unit().notes && unit().notes!.length > 0) {
+          <div class="space-y-4">
+            <label class="text-xs font-medium text-muted-foreground uppercase tracking-wider">Metadata & Context</label>
+            <div class="space-y-3">
+              @for (note of sortedNotes(); track $index) {
+                <div class="p-3 rounded-lg border border-border bg-muted/20 space-y-2">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    @if (note.type === 'note') {
+                      @if (note.from) {
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-muted text-muted-foreground border">
+                          {{ note.from }}
+                        </span>
+                      }
+                      @if (note.category) {
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-700 border border-blue-200">
+                          {{ note.category }}
+                        </span>
+                      }
+                    } @else if (note.type === 'location') {
+                       @if (note.purpose !== 'location') {
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-purple-100 text-purple-700 border border-purple-200">
+                          {{ note.purpose }}
+                        </span>
+                      }
+                      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-muted text-muted-foreground border">
+                        Sourcefile
+                      </span>
+                    }
+                  </div>
+                  <div class="text-sm text-foreground break-all" [class.font-mono]="note.type === 'location'">
+                    {{ note.content }}
+                  </div>
+                </div>
+              }
             </div>
           </div>
         }
@@ -93,6 +122,21 @@ export class TranslationDetailComponent {
   unit = input.required<TranslationUnit>();
   close = output<void>();
   save = output<{ id: string, target: string }>();
+
+  sortedNotes = computed(() => {
+    const notes = this.unit().notes;
+    if (!notes) return [];
+
+    return [...notes].sort((a, b) => {
+      const getPriority = (n: any) => {
+        if (n.type === 'note' && n.priority) {
+          return parseInt(n.priority, 10);
+        }
+        return 10; // Default lower priority for locations or notes without priority
+      };
+      return getPriority(a) - getPriority(b);
+    });
+  });
 
   targetInput = viewChild<ElementRef<HTMLTextAreaElement>>('targetInput');
 
