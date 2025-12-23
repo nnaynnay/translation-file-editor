@@ -32,6 +32,13 @@ export class XliffEditorComponent {
   dropdownOpen = signal(false);
   viewMode = signal<'compact' | 'spacious'>('spacious');
 
+  // Column visibility
+  columnsDropdownOpen = signal(false);
+  showIdColumn = signal(true);
+  showSourceColumn = signal(true);
+  showTargetColumn = signal(true);
+  showNotesColumn = signal(true);
+
   // Pagination Logic
   paginatedUnits = computed(() => {
     const all = this.state.filteredUnits();
@@ -89,6 +96,14 @@ export class XliffEditorComponent {
 
   closeDropdown() {
     this.dropdownOpen.set(false);
+  }
+
+  toggleColumnsDropdown() {
+    this.columnsDropdownOpen.update(v => !v);
+  }
+
+  closeColumnsDropdown() {
+    this.columnsDropdownOpen.set(false);
   }
 
   setFilter(status: 'all' | 'translated' | 'missing' | 'changed') {

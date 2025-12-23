@@ -9,10 +9,18 @@ import { TranslationUnit } from '../../models/translation-unit.model';
       <table class="w-full caption-bottom text-sm">
         <thead class="[&_tr]:border-b">
           <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/6">ID</th>
-            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/3 text-foreground">Source</th>
-            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/3 text-foreground">Target</th>
-            <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/6">Notes</th>
+            @if (showIdColumn()) {
+              <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/6">ID</th>
+            }
+            @if (showSourceColumn()) {
+              <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/3 text-foreground">Source</th>
+            }
+            @if (showTargetColumn()) {
+              <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/3 text-foreground">Target</th>
+            }
+            @if (showNotesColumn()) {
+              <th scope="col" class="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-1/6">Notes</th>
+            }
           </tr>
         </thead>
         <tbody class="[&_tr:last-child]:border-0">
@@ -22,30 +30,38 @@ import { TranslationUnit } from '../../models/translation-unit.model';
               [class.bg-muted]="selectedId() === unit.id"
               (click)="unitSelect.emit(unit.id)"
             >
-            <td class="p-4 align-middle font-mono text-xs break-all text-muted-foreground">
-              {{ unit.id }}
-            </td>
-            <td 
-              class="p-4 align-middle text-foreground transition-all duration-200"
-              [class.whitespace-nowrap]="viewMode() === 'compact'"
-              [class.truncate]="viewMode() === 'compact'"
-              [class.max-w-[300px]]="viewMode() === 'compact'"
-            >
-              {{ unit.source }}
-            </td>
-            <td 
-              class="p-4 align-middle text-foreground transition-all duration-200"
-              [class.whitespace-nowrap]="viewMode() === 'compact'"
-              [class.truncate]="viewMode() === 'compact'"
-              [class.max-w-[300px]]="viewMode() === 'compact'"
-            >
-               <div [class.text-muted-foreground]="!unit.target" [class.italic]="!unit.target" [class.truncate]="viewMode() === 'compact'">
-                  {{ unit.target || 'Empty' }}
-               </div>
-            </td>
+            @if (showIdColumn()) {
+              <td class="p-4 align-middle font-mono text-xs break-all text-muted-foreground">
+                {{ unit.id }}
+              </td>
+            }
+            @if (showSourceColumn()) {
+              <td 
+                class="p-4 align-middle text-foreground transition-all duration-200"
+                [class.whitespace-nowrap]="viewMode() === 'compact'"
+                [class.truncate]="viewMode() === 'compact'"
+                [class.max-w-[300px]]="viewMode() === 'compact'"
+              >
+                {{ unit.source }}
+              </td>
+            }
+            @if (showTargetColumn()) {
+              <td 
+                class="p-4 align-middle text-foreground transition-all duration-200"
+                [class.whitespace-nowrap]="viewMode() === 'compact'"
+                [class.truncate]="viewMode() === 'compact'"
+                [class.max-w-[300px]]="viewMode() === 'compact'"
+              >
+                 <div [class.text-muted-foreground]="!unit.target" [class.italic]="!unit.target" [class.truncate]="viewMode() === 'compact'">
+                    {{ unit.target || 'Empty' }}
+                 </div>
+              </td>
+            }
+            @if (showNotesColumn()) {
               <td class="p-4 align-middle text-xs text-muted-foreground">
                 {{ unit.note }}
               </td>
+            }
             </tr>
           } @empty {
              <tr>
@@ -62,6 +78,10 @@ import { TranslationUnit } from '../../models/translation-unit.model';
 export class TranslationTableComponent {
   units = input.required<TranslationUnit[]>();
   viewMode = input<'compact' | 'spacious'>('spacious');
+  showIdColumn = input<boolean>(true);
+  showSourceColumn = input<boolean>(true);
+  showTargetColumn = input<boolean>(true);
+  showNotesColumn = input<boolean>(true);
   selectedId = input<string | null>(null);
 
   unitSelect = output<string>();
