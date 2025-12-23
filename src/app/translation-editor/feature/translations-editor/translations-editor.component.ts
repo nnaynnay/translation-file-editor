@@ -7,12 +7,12 @@ import { PaginationComponent } from '../../ui/pagination/pagination.component';
 import { DOCUMENT, DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-xliff-editor',
+  selector: 'translations-editor',
   standalone: true,
   imports: [FileUploadComponent, TranslationTableComponent, TranslationDetailComponent, DecimalPipe, PaginationComponent],
-  templateUrl: './xliff-editor.component.html',
+  templateUrl: './translations-editor.component.html',
 })
-export class XliffEditorComponent {
+export class TranslationsEditorComponent {
   private state = inject(XliffStateService);
   private document = inject(DOCUMENT);
 

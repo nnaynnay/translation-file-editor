@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: '',
-        loadComponent: () => import('./translation-editor/feature/xliff-editor/xliff-editor.component').then(m => m.XliffEditorComponent)
+        loadComponent: () => import('./translation-editor/feature/translations-editor/translations-editor.component').then(m => m.TranslationsEditorComponent)
     },
     {
         path: 'sample-i18n',

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-sample-i18n',
+  selector: 'sample-i18n',
   standalone: true,
   imports: [CurrencyPipe, DatePipe],
   template: `
