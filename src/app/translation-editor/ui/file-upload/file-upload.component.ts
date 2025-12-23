@@ -5,21 +5,33 @@ import { Component, output, signal } from '@angular/core';
   standalone: true,
   template: `
     <div 
-      class="flex flex-col items-center justify-center w-full h-64 border-2 border-dotted rounded-lg cursor-pointer bg-background hover:bg-accent/50 transition-colors"
+      class="group relative flex flex-col items-center justify-center w-full max-w-xl mx-auto h-72 border-2 border-dashed rounded-2xl cursor-pointer bg-card hover:bg-accent/5 transition-all duration-300 ease-in-out overflow-hidden"
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
       (drop)="onDrop($event)"
       [class.border-primary]="isDragging()"
-      [class.border-muted-foreground-25]="!isDragging()"
+      [class.bg-accent/10]="isDragging()"
+      [class.border-muted-foreground/20]="!isDragging()"
       (click)="fileInput.click()"
     >
-      <div class="flex flex-col items-center justify-center pt-5 pb-6">
-        <svg class="w-8 h-8 mb-4 text-muted-foreground" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-        </svg>
-        <p class="mb-2 text-sm text-muted-foreground"><span class="font-semibold text-foreground">Click to upload</span> or drag and drop</p>
-        <p class="text-xs text-muted-foreground">XLIFF files (.xlf) only</p>
+      <!-- Subtle Gradient Background -->
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+      <div class="relative z-10 flex flex-col items-center justify-center p-8 text-center">
+        <div class="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+          <svg class="w-8 h-8 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#4B77D1"><g><rect fill="none" height="24" width="24"/></g><g><path d="M18,15v3H6v-3H4v3c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-3H18z M7,9l1.41,1.41L11,7.83V16h2V7.83l2.59,2.58L17,9l-5-5L7,9z"/></g></svg>
+        </div>
+        
+        <h3 class="text-xl font-bold tracking-tight text-foreground mb-2">Ready to translate?</h3>
+        <p class="mb-4 text-sm text-muted-foreground max-w-[280px]">
+          <span class="font-semibold text-primary">Click to upload</span> or drag and drop your XLIFF files here.
+        </p>
+        
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 rounded-full bg-muted text-[10px] font-bold uppercase tracking-wider text-muted-foreground border">.XLF</span>          
+        </div>
       </div>
+      
       <input 
         #fileInput 
         type="file" 

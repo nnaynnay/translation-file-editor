@@ -1,5 +1,6 @@
 <div class="flex flex-col h-screen bg-background text-foreground overflow-hidden">
     <!-- Header -->
+    @if (fileName()) {
     <header class="flex-none border-b px-6 py-4 flex justify-between items-center bg-background z-10">
         <div class="flex items-center gap-4">
             <img src="./assets/language.svg" alt="Language" class="w-6 h-6">
@@ -14,14 +15,11 @@
                     <span class="text-[10px]">➜</span>
                     <span>{{ targetLang() || '?' }}</span>
                 </div>
-                } @else {
-                <h1 class="text-2xl font-bold tracking-tight text-foreground">Translation File Editor</h1>
-                <p class="text-sm text-muted-foreground">A simple editor for XLIFF 1.2, XLIFF 2, and JSON</p>
                 }
             </div>
         </div>
 
-        @if (fileName()) {
+
         <div class="flex items-center gap-6">
             <!-- Stats -->
             <div class="flex items-center gap-6">
@@ -77,16 +75,38 @@
                 </button>
             </div>
         </div>
-        }
     </header>
+    }
 
     <!-- Main Content Area -->
     <div class="flex-1 flex overflow-hidden">
         @if (!fileName()) {
-        <main class="flex-1 p-6 overflow-auto">
-            <app-file-upload (fileSelected)="onFileSelected($event)" />
+
+        <main class="flex-1 overflow-auto ">
+            <div class="min-h-full flex flex-col items-center justify-center p-6 text-center max-w-4xl mx-auto py-20">
+                <!-- Hero Section -->
+                <div class="mb-12 space-y-4">
+                    <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">
+                        Simple <span
+                            class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">XLIFF
+                            Editor</span>
+                    </h1>
+                    <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                        Simple and easy to use XLIFF editor for translators.<br />
+                        Support <span class="text-foreground font-semibold">XLIFF 1.2</span> and <span
+                            class="text-foreground font-semibold">XLIFF 2.0</span>.
+                    </p>
+                </div>
+
+                <!-- Main Action -->
+                <div class="w-full mb-16">
+                    <app-file-upload (fileSelected)="onFileSelected($event)" />
+                </div>
+
+            </div>
         </main>
-        } @else {
+        }
+        @else {
         <!-- Left Pane: Table & Toolbar -->
         <div class="flex-1 flex flex-col min-w-0">
 
@@ -169,7 +189,8 @@
                                         class="relative flex w-full cursor-default select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
                                         [class.bg-accent]="filterStatus() === 'translated'">
                                         <span>Translated</span>
-                                        <span class="text-xs text-muted-foreground tabular-nums">{{ stats().translated
+                                        <span class="text-xs text-muted-foreground tabular-nums">{{
+                                            stats().translated
                                             }}</span>
                                     </button>
                                     <button (click)="setFilter('missing')"
