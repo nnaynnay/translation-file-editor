@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "my-angular-app-v21": {
+    "translation-file-editor": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -77,16 +77,16 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "my-angular-app-v21:build:production"
+              "buildTarget": "translation-file-editor:build:production"
             },
             "development": {
-              "buildTarget": "my-angular-app-v21:build:development"
+              "buildTarget": "translation-file-editor:build:development"
             },
             "zh-HK": {
-              "buildTarget": "my-angular-app-v21:build:zh-HK"
+              "buildTarget": "translation-file-editor:build:zh-HK"
             },
             "ja": {
-              "buildTarget": "my-angular-app-v21:build:ja"
+              "buildTarget": "translation-file-editor:build:ja"
             }
           },
           "defaultConfiguration": "development"
