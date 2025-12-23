@@ -32,8 +32,8 @@ export class XliffEditorComponent {
   dropdownOpen = signal(false);
   viewMode = signal<'compact' | 'spacious'>('spacious');
 
-  // Column visibility
-  columnsDropdownOpen = signal(false);
+  // View Settings Dropdown
+  viewSettingsOpen = signal(false);
   showIdColumn = signal(true);
   showSourceColumn = signal(true);
   showTargetColumn = signal(true);
@@ -98,12 +98,12 @@ export class XliffEditorComponent {
     this.dropdownOpen.set(false);
   }
 
-  toggleColumnsDropdown() {
-    this.columnsDropdownOpen.update(v => !v);
+  toggleViewSettings() {
+    this.viewSettingsOpen.update(v => !v);
   }
 
-  closeColumnsDropdown() {
-    this.columnsDropdownOpen.set(false);
+  closeViewSettings() {
+    this.viewSettingsOpen.set(false);
   }
 
   setFilter(status: 'all' | 'translated' | 'missing' | 'changed') {
