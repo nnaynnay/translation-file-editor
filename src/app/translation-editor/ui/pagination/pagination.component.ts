@@ -4,32 +4,30 @@ import { Component, computed, input, output } from '@angular/core';
   selector: 'app-pagination',
   standalone: true,
   template: `
-    <nav role="navigation" aria-label="pagination" class="flex w-full justify-between items-center">
-      <!-- Previous Button (Left) -->
+    <nav role="navigation" aria-label="pagination" class="flex items-center gap-1.5">
+      <!-- Previous Button -->
       <button
-        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5"
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-lg font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8"
         [disabled]="pageIndex() === 0"
         (click)="onPageChange(pageIndex() - 1)"
         aria-label="Go to previous page"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m15 18-6-6 6-6"/></svg>
-        <span>Previous</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m15 18-6-6 6-6"/></svg>
       </button>
 
-      <!-- Page Numbers (Center) -->
+      <!-- Page Numbers -->
       <ul class="flex flex-row items-center gap-1">
         @for (page of pages(); track page) {
           <li>
             @if (page === '...') {
-              <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+              <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
               </span>
             } @else {
               <button
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10"
-                [class.border]="page === pageIndex() + 1"
-                [class.border-input]="page === pageIndex() + 1"
-                [class.bg-background]="page === pageIndex() + 1"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-semibold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 w-8"
+                [class.bg-primary]="page === pageIndex() + 1"
+                [class.text-primary-foreground]="page === pageIndex() + 1"
                 [class.shadow-sm]="page === pageIndex() + 1"
                 [class.hover:bg-accent]="page !== pageIndex() + 1"
                 [class.hover:text-accent-foreground]="page !== pageIndex() + 1"
@@ -42,20 +40,25 @@ import { Component, computed, input, output } from '@angular/core';
         }
       </ul>
 
-      <!-- Next Button (Right) -->
+      <!-- Next Button -->
       <button
-        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5"
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-lg font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8"
         [disabled]="(pageIndex() + 1) * pageSize() >= total()"
         (click)="onPageChange(pageIndex() + 1)"
         aria-label="Go to next page"
       >
-        <span>Next</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m9 18 6-6-6-6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m9 18 6-6-6-6"/></svg>
       </button>
+
+      <!-- Page Summary (Optional/Compact) -->
+      <span class="ml-2 text-xs text-muted-foreground font-medium tabular-nums">
+        {{ pageIndex() + 1 }} / {{ Math.ceil(total() / pageSize()) }}
+      </span>
     </nav>
   `
 })
 export class PaginationComponent {
+  protected readonly Math = Math;
   pageIndex = input.required<number>();
   pageSize = input.required<number>();
   total = input.required<number>();

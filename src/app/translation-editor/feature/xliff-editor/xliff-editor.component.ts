@@ -73,14 +73,33 @@ export class XliffEditorComponent {
   constructor() {
     effect((onCleanup) => {
       const handleKeydown = (e: KeyboardEvent) => {
+        // Search focus: Cmd/Ctrl + K
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
           e.preventDefault();
           this.searchInput()?.nativeElement.focus();
+        }
+
+        // Pagination: Arrows (if not in input)
+        const isEditing = (e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA';
+        if (!isEditing) {
+          if (e.key === 'ArrowLeft') {
+            this.changePage(this.pageIndex() - 1);
+          } else if (e.key === 'ArrowRight') {
+            this.changePage(this.pageIndex() + 1);
+          }
         }
       };
       document.addEventListener('keydown', handleKeydown);
       onCleanup(() => document.removeEventListener('keydown', handleKeydown));
     });
+  }
+
+  changePage(newIndex: number) {
+    const totalPages = Math.ceil(this.totalItems() / this.pageSize());
+    if (newIndex >= 0 && newIndex < totalPages) {
+      this.pageIndex.set(newIndex);
+      this.selectedUnitId.set(null);
+    }
   }
 
   onSearchInput(event: Event) {
