@@ -1,5 +1,5 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationParser } from './translation-parser.interface';
+import { TranslationParser, TranslationDocument, ExportFormat } from './translation-parser.interface';
 
 export class Xliff2Parser implements TranslationParser<Document> {
     canParse(content: string): boolean {
@@ -113,5 +113,9 @@ export class Xliff2Parser implements TranslationParser<Document> {
             hasSource: true,
             hasNotes: true
         };
+    }
+
+    getSupportedExportFormats(): ExportFormat[] {
+        return [{ type: 'xliff' }];
     }
 }

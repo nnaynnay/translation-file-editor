@@ -1,4 +1,6 @@
 import { Component, computed, inject, signal, effect, viewChild, ElementRef } from '@angular/core';
+import { TranslationUnit } from '../../models/translation-unit.model';
+import { TranslationDocument, ParserFeatures, ExportFormat } from '../../services/parsers/translation-parser.interface';
 import { XliffStateService } from '../../services/xliff-state.service';
 import { FileUploadComponent } from '../../ui/file-upload/file-upload.component';
 import { TranslationTableComponent } from '../../ui/translation-table/translation-table.component';
@@ -27,6 +29,7 @@ export class TranslationsEditorComponent {
   stats = this.state.totalStats;
   documentFormat = this.state.documentFormat;
   features = this.state.features;
+  supportedExportFormats = this.state.supportedExportFormats;
 
   pageIndex = signal(0);
   pageSize = signal(10);
@@ -60,6 +63,21 @@ export class TranslationsEditorComponent {
     try {
       await this.state.loadFile(file);
       this.pageIndex.set(0);
+
+      // Initialize export filename
+      let name = file.name;
+      if (name.endsWith('.xlf') || name.endsWith('.xliff') || name.endsWith('.json')) {
+        name = name.substring(0, name.lastIndexOf('.'));
+      }
+      this.exportFilename.set(name);
+
+      // Initialize selected export format based on first supported format
+      const formats = this.supportedExportFormats();
+      if (formats.length > 0) {
+        this.selectedExport.set(formats[0]);
+      } else {
+        this.selectedExport.set(null);
+      }
     } catch (e) {
       console.error(e);
       alert('Failed to parse file');
@@ -210,27 +228,67 @@ export class TranslationsEditorComponent {
     window.location.reload();
   }
 
-  exportFile(format: 'xliff' | 'json', jsonFormat?: 'flat' | 'nested' | 'angular') {
-    const content = this.state.getExportContent(format, jsonFormat);
-    const blob = new Blob([content], { type: format === 'json' ? 'application/json' : 'application/xliff+xml' });
+  // Export Settings
+  protected readonly exportDropdownOpen = signal(false);
+  protected readonly exportFilename = signal('');
+  protected readonly includeLocaleSuffix = signal(true);
+  protected readonly selectedExport = signal<ExportFormat | null>(null);
+
+  protected readonly exportFilenamePreview = computed(() => {
+    const baseName = this.exportFilename() || 'translations';
+    const selected = this.selectedExport();
+    const lang = this.targetLang();
+
+    if (!selected) return baseName;
+
+    const suffix = (this.includeLocaleSuffix() && lang) ? `.${lang}` : '';
+    const extension = selected.type === 'json' ? '.json' : '.xlf';
+
+    return `${baseName}${suffix}${extension}`;
+  });
+
+  protected readonly exportLabel = computed(() => {
+    const selected = this.selectedExport();
+    if (!selected) return 'Export';
+
+    if (selected.type === 'xliff') return 'XLIFF';
+    if (selected.jsonFormat === 'flat') return 'JSON (Flat)';
+    if (selected.jsonFormat === 'nested') return 'JSON (Nested)';
+    if (selected.jsonFormat === 'angular') return 'JSON (Angular)';
+
+    return 'Export';
+  });
+
+  exportFile(format?: 'xliff' | 'json', jsonFormat?: 'flat' | 'nested' | 'angular') {
+    let targetFormat: 'xliff' | 'json';
+    let targetJsonFormat: 'flat' | 'nested' | 'angular' | undefined;
+
+    if (format) {
+      targetFormat = format;
+      targetJsonFormat = jsonFormat;
+      this.selectedExport.set({ type: format, jsonFormat } as ExportFormat);
+    } else {
+      const selected = this.selectedExport();
+      if (selected) {
+        targetFormat = selected.type;
+        targetJsonFormat = selected.type === 'json' ? selected.jsonFormat : undefined;
+      } else {
+        // Fallback: This shouldn't normally happen if supportedExportFormats is populated
+        targetFormat = 'xliff';
+      }
+    }
+
+    const content = this.state.getExportContent(targetFormat, targetJsonFormat);
+    const blob = new Blob([content], { type: targetFormat === 'json' ? 'application/json' : 'application/xliff+xml' });
     const url = URL.createObjectURL(blob);
 
     const a = this.document.createElement('a');
     a.href = url;
-
-    let extension = format === 'json' ? '.json' : '.xlf';
-    let baseName = this.fileName() || 'translations';
-    if (baseName.endsWith('.xlf') || baseName.endsWith('.xliff') || baseName.endsWith('.json')) {
-      baseName = baseName.substring(0, baseName.lastIndexOf('.'));
-    }
-
-    a.download = format === 'json' ? `${baseName}${extension}` : `translated_${this.fileName()}`;
+    a.download = this.exportFilenamePreview();
     a.click();
     URL.revokeObjectURL(url);
     this.closeExportDropdown();
   }
-
-  protected readonly exportDropdownOpen = signal(false);
 
   toggleExportDropdown() {
     this.exportDropdownOpen.update(v => !v);
@@ -238,5 +296,19 @@ export class TranslationsEditorComponent {
 
   closeExportDropdown() {
     this.exportDropdownOpen.set(false);
+  }
+
+  onExportFilenameChange(event: Event) {
+    const val = (event.target as HTMLInputElement).value;
+    this.exportFilename.set(val);
+  }
+
+  selectExportFormat(format: ExportFormat) {
+    this.selectedExport.set(format);
+  }
+
+  toggleIncludeLocaleSuffix() {
+    if (!this.targetLang()) return;
+    this.includeLocaleSuffix.update(v => !v);
   }
 }

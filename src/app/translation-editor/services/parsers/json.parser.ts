@@ -1,5 +1,5 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationParser } from './translation-parser.interface';
+import { TranslationParser, ExportFormat } from './translation-parser.interface';
 
 export class JsonParser implements TranslationParser<Record<string, unknown>> {
     private format: 'flat' | 'nested' | 'angular' = 'flat';
@@ -82,5 +82,18 @@ export class JsonParser implements TranslationParser<Record<string, unknown>> {
             hasSource: false,
             hasNotes: false
         };
+    }
+
+    getSupportedExportFormats(): ExportFormat[] {
+        if (this.format === 'nested') {
+            return [
+                { type: 'json', jsonFormat: 'nested' },
+                { type: 'json', jsonFormat: 'flat' }
+            ];
+        }
+        if (this.format === 'angular') {
+            return [{ type: 'json', jsonFormat: 'angular' }];
+        }
+        return [{ type: 'json', jsonFormat: 'flat' }];
     }
 }

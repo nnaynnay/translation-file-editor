@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { XliffParserService } from './xliff-parser.service';
 import { TranslationUnit } from '../models/translation-unit.model';
-import { TranslationDocument, ParserFeatures } from './parsers/translation-parser.interface';
+import { TranslationDocument, ParserFeatures, ExportFormat } from './parsers/translation-parser.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +18,7 @@ export class XliffStateService {
     readonly modifiedIds = signal<Set<string>>(new Set());
     readonly documentFormat = signal<string | undefined>(undefined);
     readonly features = signal<ParserFeatures>({ hasSource: true, hasNotes: true });
+    readonly supportedExportFormats = signal<ExportFormat[]>([]);
 
     readonly filterQuery = signal<string>('');
     readonly filterStatus = signal<'all' | 'translated' | 'missing' | 'changed'>('all');
@@ -73,6 +74,7 @@ export class XliffStateService {
         this.fileName.set(file.name);
         this.documentFormat.set(result.documentFormat);
         this.features.set(this.parser.getFeatures());
+        this.supportedExportFormats.set(this.parser.getSupportedExportFormats());
         this.modifiedIds.set(new Set()); // Reset modified tracking
         this.filterStatus.set('all');
     }
@@ -97,17 +99,17 @@ export class XliffStateService {
         }
     }
 
-    getExportContent(format: 'xliff' | 'json', jsonFormat?: 'flat' | 'nested' | 'angular'): string {
+    getExportContent(
+        format: 'xliff' | 'json',
+        jsonFormat?: 'flat' | 'nested' | 'angular'
+    ): string {
         const doc = this.rawDocument();
         const currentFormat = this.documentFormat();
 
         if (format === 'xliff') {
-            return doc ? this.parser.serialize(doc) : '';
-        }
-
-        // If it's JSON and we want to keep the original structure (round-trip)
-        // and no specific format was requested
-        if (format === 'json' && currentFormat?.includes('json') && !jsonFormat) {
+            // For XLIFF, if translatedOnly is true, we might need a more complex serialization
+            // but for now, let's assume we just serialize the current doc which has updates.
+            // If we really wanted to filter XLIFF, we'd need parser support to remove nodes.
             return doc ? this.parser.serialize(doc) : '';
         }
 

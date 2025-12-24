@@ -70,45 +70,91 @@
                 <div class="fixed inset-0 z-30" (click)="closeExportDropdown()"></div>
                 }
 
-                <div class="relative z-40">
-                    <button (click)="toggleExportDropdown()"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 gap-2">
+                <div class="relative z-40 flex items-center">
+                    <button (click)="exportFile()"
+                        class="inline-flex items-baseline justify-center gap-2 rounded-l-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 border-r border-primary-foreground/20">
                         Export
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="h-3 w-3 opacity-50">
+                    </button>
+                    <button (click)="toggleExportDropdown()"
+                        class="inline-flex items-center justify-center rounded-r-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-2 py-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="h-4 w-4">
                             <path d="m6 9 6 6 6-6" />
                         </svg>
                     </button>
 
                     @if (exportDropdownOpen()) {
                     <div
-                        class="absolute right-0 top-full mt-1 w-[200px] rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
-                        <div class="p-1">
-                            <div
-                                class="px-2 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                                XLIFF</div>
-                            <button (click)="exportFile('xliff')"
-                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
-                                <span>XLIFF File</span>
-                            </button>
+                        class="absolute right-0 top-full mt-1 w-[320px] rounded-md border bg-popover text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 p-4 space-y-4">
+                        <!-- Filename Section -->
+                        <div class="space-y-2">
+                            <label
+                                class="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Filename</label>
+                            <div class="space-y-1">
+                                <input type="text" [value]="exportFilename()" (input)="onExportFilenameChange($event)"
+                                    class="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    placeholder="Filename..." />
+                                <div class="flex items-center gap-2">
+                                    <button (click)="toggleIncludeLocaleSuffix()" [disabled]="!targetLang()"
+                                        [class.opacity-50]="!targetLang()" [class.cursor-not-allowed]="!targetLang()"
+                                        class="flex items-center gap-2 text-[10px] text-muted-foreground hover:text-foreground transition-colors">
+                                        <div class="w-3 h-3 rounded border flex items-center justify-center"
+                                            [class.bg-primary]="includeLocaleSuffix() && targetLang()"
+                                            [class.border-primary]="includeLocaleSuffix() && targetLang()"
+                                            [class.bg-muted]="!targetLang()">
+                                            @if (includeLocaleSuffix() && targetLang()) {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="text-primary-foreground">
+                                                <polyline points="20 6 9 17 4 12" />
+                                            </svg>
+                                            }
+                                        </div>
+                                        <span>Include locale suffix</span>
+                                        @if (targetLang()) {
+                                        <span class="text-primary font-bold">({{ targetLang() }})</span>
+                                        } @else {
+                                        <span class="italic">(No target language)</span>
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-muted/50 rounded p-2 border border-dashed">
+                                <div class="text-[10px] text-muted-foreground uppercase font-medium mb-1">Preview</div>
+                                <div class="text-xs font-mono truncate text-foreground">{{ exportFilenamePreview() }}
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="h-px bg-border my-1"></div>
-                            <div
-                                class="px-2 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                                JSON</div>
+                        <!-- Format Section -->
+                        <div class="space-y-2">
+                            <label
+                                class="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Format</label>
+                            <div class="grid grid-cols-2 gap-1">
+                                @for (format of supportedExportFormats(); track $index) {
+                                <button (click)="selectExportFormat(format)"
+                                    class="flex items-center justify-center rounded-sm px-2 py-1.5 text-xs border transition-colors hover:bg-accent"
+                                    [class.bg-accent]="selectedExport() === format"
+                                    [class.border-primary]="selectedExport() === format">
+                                    @if (format.type === 'xliff') {
+                                    XLIFF
+                                    } @else if (format.type === 'json') {
+                                    @if (format.jsonFormat === 'flat') { JSON (Flat) }
+                                    @else if (format.jsonFormat === 'nested') { JSON (Nested) }
+                                    @else if (format.jsonFormat === 'angular') { JSON (Angular) }
+                                    }
+                                </button>
+                                }
+                            </div>
+                        </div>
 
-                            <button (click)="exportFile('json', 'flat')"
-                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
-                                <span>JSON (Flat)</span>
-                            </button>
-                            <button (click)="exportFile('json', 'nested')"
-                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
-                                <span>JSON (Nested)</span>
-                            </button>
-                            <button (click)="exportFile('json', 'angular')"
-                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
-                                <span>JSON (Angular)</span>
+                        <!-- Options Section -->
+                        <div class="pt-2 border-t">
+                            <button (click)="exportFile()"
+                                class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4">
+                                Download File
                             </button>
                         </div>
                     </div>

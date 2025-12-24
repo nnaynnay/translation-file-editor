@@ -1,5 +1,5 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationParser } from './translation-parser.interface';
+import { TranslationParser, TranslationDocument, ExportFormat } from './translation-parser.interface';
 
 export class Xliff12Parser implements TranslationParser<Document> {
     canParse(content: string): boolean {
@@ -41,7 +41,7 @@ export class Xliff12Parser implements TranslationParser<Document> {
                 if (sourcefile) {
                     notes.push({
                         type: 'location',
-                        content: `${sourcefile}${linenumber ? ':' + linenumber : ''}`,
+                        content: `${sourcefile}${linenumber ? ':' + linenumber : ''} `,
                         sourcefile,
                         linenumber,
                         purpose: 'location'
@@ -114,5 +114,9 @@ export class Xliff12Parser implements TranslationParser<Document> {
             hasSource: true,
             hasNotes: true
         };
+    }
+
+    getSupportedExportFormats(): ExportFormat[] {
+        return [{ type: 'xliff' }];
     }
 }

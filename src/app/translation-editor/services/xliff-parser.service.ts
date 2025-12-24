@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslationUnit } from '../models/translation-unit.model';
-import { TranslationParser, TranslationDocument } from './parsers/translation-parser.interface';
+import { TranslationParser, TranslationDocument, ExportFormat } from './parsers/translation-parser.interface';
 import { Xliff12Parser } from './parsers/xliff-12.parser';
 import { Xliff2Parser } from './parsers/xliff-2.parser';
 import { JsonParser } from './parsers/json.parser';
@@ -50,6 +50,10 @@ export class XliffParserService {
 
     getFeatures() {
         return this.activeParser?.getFeatures() ?? { hasSource: true, hasNotes: true };
+    }
+
+    getSupportedExportFormats(): ExportFormat[] {
+        return this.activeParser?.getSupportedExportFormats() ?? [{ type: 'xliff' }];
     }
 
     updateUnit(document: TranslationDocument, id: string, targetValue: string): void {
