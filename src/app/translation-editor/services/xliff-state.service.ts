@@ -97,12 +97,27 @@ export class XliffStateService {
         }
     }
 
-    getExportContent(format: 'xliff' | 'json'): string {
+    getExportContent(format: 'xliff' | 'json', jsonFormat?: 'flat' | 'nested' | 'angular'): string {
         const doc = this.rawDocument();
-        if (format === 'xliff' || (format === 'json' && this.documentFormat()?.includes('json'))) {
+        const currentFormat = this.documentFormat();
+
+        if (format === 'xliff') {
             return doc ? this.parser.serialize(doc) : '';
-        } else {
-            return this.parser.generateJson(this.units());
         }
+
+        // If it's JSON and we want to keep the original structure (round-trip)
+        // and no specific format was requested
+        if (format === 'json' && currentFormat?.includes('json') && !jsonFormat) {
+            return doc ? this.parser.serialize(doc) : '';
+        }
+
+        // Otherwise generate fresh JSON with requested or detected format
+        let targetJsonFormat: 'flat' | 'nested' | 'angular' = jsonFormat || 'flat';
+        if (!jsonFormat && currentFormat?.includes('json')) {
+            if (currentFormat.includes('nested')) targetJsonFormat = 'nested';
+            else if (currentFormat.includes('angular')) targetJsonFormat = 'angular';
+        }
+
+        return this.parser.generateJson(this.units(), targetJsonFormat, this.targetLang() || this.sourceLang());
     }
 }

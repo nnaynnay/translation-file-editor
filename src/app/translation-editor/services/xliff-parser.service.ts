@@ -70,11 +70,44 @@ export class XliffParserService {
         return this.activeParser.serialize(document);
     }
 
-    generateJson(units: TranslationUnit[]): string {
-        const output: Record<string, string> = {};
-        units.forEach(u => {
-            output[u.id] = u.target;
-        });
-        return JSON.stringify(output, null, 2);
+    generateJson(units: TranslationUnit[], format: 'flat' | 'nested' | 'angular' = 'flat', locale?: string): string {
+        if (format === 'flat') {
+            const output: Record<string, string> = {};
+            units.forEach(u => {
+                output[u.id] = u.target;
+            });
+            return JSON.stringify(output, null, 2);
+        }
+
+        if (format === 'angular') {
+            const translations: Record<string, string> = {};
+            units.forEach(u => {
+                translations[u.id] = u.target;
+            });
+            const output: any = { translations };
+            if (locale) {
+                output.locale = locale;
+            }
+            return JSON.stringify(output, null, 2);
+        }
+
+        if (format === 'nested') {
+            const output: any = {};
+            units.forEach(u => {
+                const keys = u.id.split('.');
+                let current = output;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    const key = keys[i];
+                    if (!current[key] || typeof current[key] !== 'object') {
+                        current[key] = {};
+                    }
+                    current = current[key];
+                }
+                current[keys[keys.length - 1]] = u.target;
+            });
+            return JSON.stringify(output, null, 2);
+        }
+
+        return '';
     }
 }

@@ -58,16 +58,19 @@ export class JsonParser implements TranslationParser<Record<string, unknown>> {
             current = document['translations'];
         }
 
-        const keys = id.split('.');
-        for (let i = 0; i < keys.length - 1; i++) {
-            const key = keys[i];
-            if (!current[key]) {
-                current[key] = {};
+        if (this.format === 'nested') {
+            const keys = id.split('.');
+            for (let i = 0; i < keys.length - 1; i++) {
+                const key = keys[i];
+                if (!current[key] || typeof current[key] !== 'object') {
+                    current[key] = {};
+                }
+                current = current[key];
             }
-            current = current[key];
+            current[keys[keys.length - 1]] = targetValue;
+        } else {
+            current[id] = targetValue;
         }
-
-        current[keys[keys.length - 1]] = targetValue;
     }
 
     serialize(document: Record<string, unknown>): string {

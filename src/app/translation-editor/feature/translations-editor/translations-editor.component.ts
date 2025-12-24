@@ -77,7 +77,7 @@ export class TranslationsEditorComponent {
       const features = this.features();
       this.showSourceColumn.set(features.hasSource);
       this.showNotesColumn.set(features.hasNotes);
-    }, { allowSignalWrites: true });
+    });
 
     effect((onCleanup) => {
       const handleKeydown = (e: KeyboardEvent) => {
@@ -210,15 +210,33 @@ export class TranslationsEditorComponent {
     window.location.reload();
   }
 
-  exportFile(format: 'xliff' | 'json') {
-    const content = this.state.getExportContent(format);
+  exportFile(format: 'xliff' | 'json', jsonFormat?: 'flat' | 'nested' | 'angular') {
+    const content = this.state.getExportContent(format, jsonFormat);
     const blob = new Blob([content], { type: format === 'json' ? 'application/json' : 'application/xliff+xml' });
     const url = URL.createObjectURL(blob);
 
     const a = this.document.createElement('a');
     a.href = url;
-    a.download = format === 'json' ? 'translations.json' : `translated_${this.fileName()}`;
+
+    let extension = format === 'json' ? '.json' : '.xlf';
+    let baseName = this.fileName() || 'translations';
+    if (baseName.endsWith('.xlf') || baseName.endsWith('.xliff') || baseName.endsWith('.json')) {
+      baseName = baseName.substring(0, baseName.lastIndexOf('.'));
+    }
+
+    a.download = format === 'json' ? `${baseName}${extension}` : `translated_${this.fileName()}`;
     a.click();
     URL.revokeObjectURL(url);
+    this.closeExportDropdown();
+  }
+
+  protected readonly exportDropdownOpen = signal(false);
+
+  toggleExportDropdown() {
+    this.exportDropdownOpen.update(v => !v);
+  }
+
+  closeExportDropdown() {
+    this.exportDropdownOpen.set(false);
   }
 }

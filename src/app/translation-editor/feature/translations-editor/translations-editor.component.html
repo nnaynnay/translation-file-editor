@@ -64,11 +64,57 @@
             <div class="h-8 w-px bg-border"></div>
 
             <!-- Buttons -->
-            <div class="flex gap-2">
-                <button (click)="exportFile('xliff')"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2">
-                    Export
-                </button>
+            <div class="flex gap-2 relative">
+                <!-- Backdrop -->
+                @if (exportDropdownOpen()) {
+                <div class="fixed inset-0 z-30" (click)="closeExportDropdown()"></div>
+                }
+
+                <div class="relative z-40">
+                    <button (click)="toggleExportDropdown()"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 gap-2">
+                        Export
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="h-3 w-3 opacity-50">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </button>
+
+                    @if (exportDropdownOpen()) {
+                    <div
+                        class="absolute right-0 top-full mt-1 w-[200px] rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
+                        <div class="p-1">
+                            <div
+                                class="px-2 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                                XLIFF</div>
+                            <button (click)="exportFile('xliff')"
+                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                <span>XLIFF File</span>
+                            </button>
+
+                            <div class="h-px bg-border my-1"></div>
+                            <div
+                                class="px-2 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                                JSON</div>
+
+                            <button (click)="exportFile('json', 'flat')"
+                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                <span>JSON (Flat)</span>
+                            </button>
+                            <button (click)="exportFile('json', 'nested')"
+                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                <span>JSON (Nested)</span>
+                            </button>
+                            <button (click)="exportFile('json', 'angular')"
+                                class="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                <span>JSON (Angular)</span>
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </div>
+
                 <button (click)="reset()"
                     class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-destructive hover:text-destructive-foreground h-9 px-4 py-2">
                     Close
