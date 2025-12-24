@@ -1,8 +1,10 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
 
-export interface TranslationParser {
+export type TranslationDocument = Document | Record<string, unknown>;
+
+export interface TranslationParser<T extends TranslationDocument = TranslationDocument> {
     canParse(content: string): boolean;
-    parse(content: string): { document: Document; units: TranslationUnit[]; sourceLang?: string; targetLang?: string; documentFormat?: string };
-    updateUnit(document: Document, id: string, targetValue: string): void;
-    serialize(document: Document): string;
+    parse(content: string): { document: T; units: TranslationUnit[]; sourceLang?: string; targetLang?: string; documentFormat?: string };
+    updateUnit(document: T, id: string, targetValue: string): void;
+    serialize(document: T): string;
 }

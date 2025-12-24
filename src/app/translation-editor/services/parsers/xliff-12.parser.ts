@@ -1,7 +1,7 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
 import { TranslationParser } from './translation-parser.interface';
 
-export class Xliff12Parser implements TranslationParser {
+export class Xliff12Parser implements TranslationParser<Document> {
     canParse(content: string): boolean {
         return content.includes('urn:oasis:names:tc:xliff:document:1.2');
     }

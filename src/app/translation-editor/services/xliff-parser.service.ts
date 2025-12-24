@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TranslationUnit } from '../models/translation-unit.model';
-import { TranslationParser } from './parsers/translation-parser.interface';
+import { TranslationParser, TranslationDocument } from './parsers/translation-parser.interface';
 import { Xliff12Parser } from './parsers/xliff-12.parser';
 import { Xliff2Parser } from './parsers/xliff-2.parser';
+import { JsonParser } from './parsers/json.parser';
 
 
 @Injectable({
@@ -11,7 +12,8 @@ import { Xliff2Parser } from './parsers/xliff-2.parser';
 export class XliffParserService {
     private parsers: TranslationParser[] = [
         new Xliff12Parser(),
-        new Xliff2Parser()
+        new Xliff2Parser(),
+        new JsonParser()
     ];
 
     private activeParser: TranslationParser | null = null;
@@ -46,17 +48,20 @@ export class XliffParserService {
         return this.activeParser.parse(xmlContent);
     }
 
-    updateUnit(document: Document, id: string, targetValue: string): void {
+    updateUnit(document: TranslationDocument, id: string, targetValue: string): void {
         if (!this.activeParser) {
             throw new Error('No active parser. Load a file first.');
         }
         this.activeParser.updateUnit(document, id, targetValue);
     }
 
-    serializeXliff(document: Document): string {
+    serialize(document: TranslationDocument): string {
         if (!this.activeParser) {
-            const serializer = new XMLSerializer();
-            return serializer.serializeToString(document);
+            if (document instanceof Document) {
+                const serializer = new XMLSerializer();
+                return serializer.serializeToString(document);
+            }
+            return JSON.stringify(document, null, 2);
         }
         return this.activeParser.serialize(document);
     }

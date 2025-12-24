@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { XliffParserService } from './xliff-parser.service';
 import { TranslationUnit } from '../models/translation-unit.model';
+import { TranslationDocument } from './parsers/translation-parser.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ export class XliffStateService {
     private parser = inject(XliffParserService);
 
     // State Signals
-    readonly rawDocument = signal<Document | null>(null);
+    readonly rawDocument = signal<TranslationDocument | null>(null);
     readonly fileName = signal<string | null>(null);
     readonly sourceLang = signal<string | undefined>(undefined);
     readonly targetLang = signal<string | undefined>(undefined);
@@ -94,9 +95,9 @@ export class XliffStateService {
     }
 
     getExportContent(format: 'xliff' | 'json'): string {
-        if (format === 'xliff') {
-            const doc = this.rawDocument();
-            return doc ? this.parser.serializeXliff(doc) : '';
+        const doc = this.rawDocument();
+        if (format === 'xliff' || (format === 'json' && this.documentFormat()?.includes('json'))) {
+            return doc ? this.parser.serialize(doc) : '';
         } else {
             return this.parser.generateJson(this.units());
         }

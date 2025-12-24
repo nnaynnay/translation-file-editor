@@ -1,5 +1,7 @@
 import { Component, output, signal } from '@angular/core';
 
+const ACCEPTED_FILE_TYPES = ['.xlf', '.json'];
+
 @Component({
   selector: 'app-file-upload',
   standalone: true,
@@ -36,7 +38,7 @@ import { Component, output, signal } from '@angular/core';
         #fileInput 
         type="file" 
         class="hidden" 
-        accept=".xlf,.xliff" 
+        [accept]="acceptedFileTypes.join(',')"
         (change)="onFileSelected($event)" 
       />
     </div>
@@ -45,6 +47,8 @@ import { Component, output, signal } from '@angular/core';
 export class FileUploadComponent {
   fileSelected = output<File>();
   isDragging = signal(false);
+
+  acceptedFileTypes = ACCEPTED_FILE_TYPES;
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -77,10 +81,10 @@ export class FileUploadComponent {
   }
 
   private validateAndEmit(file: File) {
-    if (file.name.endsWith('.xlf') || file.name.endsWith('.xliff')) {
+    if (this.acceptedFileTypes.some(type => file.name.endsWith(type))) {
       this.fileSelected.emit(file);
     } else {
-      alert('Please upload a valid .xlf file');
+      alert(`Please upload a valid file type: ${this.acceptedFileTypes.join(', ')}`);
     }
   }
 }

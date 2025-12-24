@@ -1,7 +1,7 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
 import { TranslationParser } from './translation-parser.interface';
 
-export class Xliff2Parser implements TranslationParser {
+export class Xliff2Parser implements TranslationParser<Document> {
     canParse(content: string): boolean {
         return content.includes('version="2.0"') && content.includes('presentation="libRExo"'); // Basic check, can be more robust
     }
