@@ -292,6 +292,7 @@
                                             </span>
                                             <span>ID</span>
                                         </button>
+                                        @if (features().hasSource) {
                                         <button (click)="showSourceColumn.set(!showSourceColumn())"
                                             class="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
                                             <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -306,6 +307,7 @@
                                             </span>
                                             <span>Source</span>
                                         </button>
+                                        }
                                         <button (click)="showTargetColumn.set(!showTargetColumn())"
                                             class="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
                                             <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -320,6 +322,7 @@
                                             </span>
                                             <span>Target</span>
                                         </button>
+                                        @if (features().hasNotes) {
                                         <button (click)="showNotesColumn.set(!showNotesColumn())"
                                             class="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
                                             <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -334,6 +337,7 @@
                                             </span>
                                             <span>Notes</span>
                                         </button>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -410,8 +414,8 @@
         <!-- Right Pane: Detail View -->
         @if (selectedUnit()) {
         <aside class="w-[400px] flex-none shadow-xl z-20">
-            <app-translation-detail [unit]="selectedUnit()!" (save)="onUnitUpdate($event)"
-                (close)="selectedUnitId.set(null)" />
+            <app-translation-detail [unit]="selectedUnit()!" [showSource]="features().hasSource"
+                [showNotes]="features().hasNotes" (save)="onUnitUpdate($event)" (close)="selectedUnitId.set(null)" />
         </aside>
         }
         }

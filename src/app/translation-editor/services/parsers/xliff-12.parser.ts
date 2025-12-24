@@ -108,4 +108,11 @@ export class Xliff12Parser implements TranslationParser<Document> {
         const serializer = new XMLSerializer();
         return serializer.serializeToString(document);
     }
+
+    getFeatures() {
+        return {
+            hasSource: true,
+            hasNotes: true
+        };
+    }
 }

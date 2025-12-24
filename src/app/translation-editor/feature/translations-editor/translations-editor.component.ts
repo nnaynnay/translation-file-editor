@@ -26,6 +26,7 @@ export class TranslationsEditorComponent {
   filterStatus = this.state.filterStatus;
   stats = this.state.totalStats;
   documentFormat = this.state.documentFormat;
+  features = this.state.features;
 
   pageIndex = signal(0);
   pageSize = signal(10);
@@ -72,6 +73,12 @@ export class TranslationsEditorComponent {
 
 
   constructor() {
+    effect(() => {
+      const features = this.features();
+      this.showSourceColumn.set(features.hasSource);
+      this.showNotesColumn.set(features.hasNotes);
+    }, { allowSignalWrites: true });
+
     effect((onCleanup) => {
       const handleKeydown = (e: KeyboardEvent) => {
         // Search focus: Cmd/Ctrl + K

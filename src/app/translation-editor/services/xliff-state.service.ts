@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { XliffParserService } from './xliff-parser.service';
 import { TranslationUnit } from '../models/translation-unit.model';
-import { TranslationDocument } from './parsers/translation-parser.interface';
+import { TranslationDocument, ParserFeatures } from './parsers/translation-parser.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +17,7 @@ export class XliffStateService {
     readonly units = signal<TranslationUnit[]>([]);
     readonly modifiedIds = signal<Set<string>>(new Set());
     readonly documentFormat = signal<string | undefined>(undefined);
+    readonly features = signal<ParserFeatures>({ hasSource: true, hasNotes: true });
 
     readonly filterQuery = signal<string>('');
     readonly filterStatus = signal<'all' | 'translated' | 'missing' | 'changed'>('all');
@@ -25,6 +26,7 @@ export class XliffStateService {
     readonly filteredUnits = computed(() => {
         const query = this.filterQuery().toLowerCase();
         const status = this.filterStatus();
+        const features = this.features();
         let all = this.units();
 
         // 1. Filter by Status
@@ -42,9 +44,9 @@ export class XliffStateService {
 
         return all.filter(u =>
             u.id.toLowerCase().includes(query) ||
-            u.source.toLowerCase().includes(query) ||
+            (features.hasSource && u.source.toLowerCase().includes(query)) ||
             u.target.toLowerCase().includes(query) ||
-            (u.notes && u.notes.some(n => n.content.toLowerCase().includes(query)))
+            (features.hasNotes && u.notes && u.notes.some(n => n.content.toLowerCase().includes(query)))
         );
     });
 
@@ -70,6 +72,7 @@ export class XliffStateService {
         this.targetLang.set(result.targetLang);
         this.fileName.set(file.name);
         this.documentFormat.set(result.documentFormat);
+        this.features.set(this.parser.getFeatures());
         this.modifiedIds.set(new Set()); // Reset modified tracking
         this.filterStatus.set('all');
     }

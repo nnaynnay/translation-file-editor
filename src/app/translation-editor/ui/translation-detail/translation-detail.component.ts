@@ -39,6 +39,7 @@ import { TranslationUnit } from '../../models/translation-unit.model';
           </div>
         </div>
 
+        @if (showSource()) {
         <div class="space-y-2">
            <div class="flex items-center justify-between">
             <label class="text-xs font-medium text-muted-foreground uppercase tracking-wider">Source Text</label>
@@ -57,8 +58,9 @@ import { TranslationUnit } from '../../models/translation-unit.model';
             {{ unit().source }}
           </div>
         </div>
+        }
 
-        @if (unit().notes && unit().notes!.length > 0) {
+        @if (showNotes() && unit().notes && unit().notes!.length > 0) {
           <div class="space-y-4">
             <label class="text-xs font-medium text-muted-foreground uppercase tracking-wider">Metadata & Context</label>
             <div class="space-y-3">
@@ -120,6 +122,8 @@ import { TranslationUnit } from '../../models/translation-unit.model';
 })
 export class TranslationDetailComponent {
   unit = input.required<TranslationUnit>();
+  showSource = input<boolean>(true);
+  showNotes = input<boolean>(true);
   close = output<void>();
   save = output<{ id: string, target: string }>();
 

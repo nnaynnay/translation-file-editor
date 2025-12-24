@@ -48,6 +48,10 @@ export class XliffParserService {
         return this.activeParser.parse(xmlContent);
     }
 
+    getFeatures() {
+        return this.activeParser?.getFeatures() ?? { hasSource: true, hasNotes: true };
+    }
+
     updateUnit(document: TranslationDocument, id: string, targetValue: string): void {
         if (!this.activeParser) {
             throw new Error('No active parser. Load a file first.');

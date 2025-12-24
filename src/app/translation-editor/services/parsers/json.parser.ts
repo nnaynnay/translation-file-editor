@@ -73,4 +73,11 @@ export class JsonParser implements TranslationParser<Record<string, unknown>> {
     serialize(document: Record<string, unknown>): string {
         return JSON.stringify(document, null, 2);
     }
+
+    getFeatures() {
+        return {
+            hasSource: false,
+            hasNotes: false
+        };
+    }
 }
