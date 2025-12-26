@@ -44,7 +44,7 @@ describe('TranslationParserService', () => {
     });
 
     it('should update unit', () => {
-        const { document, units } = service.parse(SAMPLE_XLIFF);
+        const { document } = service.parse(SAMPLE_XLIFF);
         service.updateUnit(document, 'welcome.title', 'New Target');
 
         // Check serialization

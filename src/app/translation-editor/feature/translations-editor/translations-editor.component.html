@@ -1,7 +1,7 @@
 <div class="flex flex-col h-screen bg-background text-foreground overflow-hidden">
     <!-- Header -->
     @if (fileName()) {
-    <header class="flex-none border-b px-6 py-4 flex justify-between items-center bg-background z-10">
+    <header class="flex-none border-b px-6 py-4 flex justify-between items-center bg-background z-50">
         <div class="flex items-center gap-4">
             <img src="./assets/language.svg" alt="Language" class="w-6 h-6">
             <div class="flex flex-col gap-0">
@@ -67,10 +67,10 @@
             <div class="flex gap-2 relative">
                 <!-- Backdrop -->
                 @if (exportDropdownOpen()) {
-                <div class="fixed inset-0 z-30" (click)="closeExportDropdown()"></div>
+                <div class="fixed inset-0 z-60" (click)="closeExportDropdown()"></div>
                 }
 
-                <div class="relative z-40 flex items-center">
+                <div class="relative z-70 flex items-center">
                     <button (click)="exportFile()"
                         class="inline-flex items-baseline justify-center gap-2 rounded-l-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 border-r border-primary-foreground/20">
                         Export
@@ -173,31 +173,7 @@
     <!-- Main Content Area -->
     <div class="flex-1 flex overflow-hidden">
         @if (!fileName()) {
-
-        <main class="flex-1 overflow-auto ">
-            <div class="min-h-full flex flex-col items-center justify-center p-6 text-center max-w-4xl mx-auto py-20">
-                <!-- Hero Section -->
-                <div class="mb-12 space-y-4">
-                    <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">
-                        Simple <span
-                            class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">Translation
-                            Editor</span>
-                    </h1>
-                    <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Simple and easy to use translation editor for developers and translators.<br />
-                        Support <span class="text-foreground font-semibold">XLIFF 1.2</span>, <span
-                            class="text-foreground font-semibold">XLIFF 2.0</span> and <span
-                            class="text-foreground font-semibold">JSON</span>.
-                    </p>
-                </div>
-
-                <!-- Main Action -->
-                <div class="w-full mb-16">
-                    <app-file-upload (fileSelected)="onFileSelected($event)" />
-                </div>
-
-            </div>
-        </main>
+        <app-landing-screen class="flex w-full" (fileSelected)="onFileSelected($event)" />
         }
         @else {
         <!-- Left Pane: Table & Toolbar -->
@@ -231,10 +207,10 @@
                     <div class="flex items-center gap-2 relative">
                         <!-- Backdrop -->
                         @if (dropdownOpen()) {
-                        <div class="fixed inset-0 z-30" (click)="closeDropdown()"></div>
+                        <div class="fixed inset-0 z-20" (click)="closeDropdown()"></div>
                         }
 
-                        <div class="relative z-40">
+                        <div class="relative z-30">
                             <button (click)="toggleDropdown()"
                                 class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 gap-2"
                                 title="Filter units">
@@ -315,10 +291,10 @@
                     <div class="flex items-center gap-2 relative">
                         <!-- Backdrop -->
                         @if (viewSettingsOpen()) {
-                        <div class="fixed inset-0 z-30" (click)="closeViewSettings()"></div>
+                        <div class="fixed inset-0 z-20" (click)="closeViewSettings()"></div>
                         }
 
-                        <div class="relative z-40">
+                        <div class="relative z-30">
                             <button (click)="toggleViewSettings()"
                                 class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 gap-2"
                                 title="View Settings">
@@ -506,7 +482,7 @@
 
         <!-- Right Pane: Detail View -->
         @if (selectedUnit()) {
-        <aside class="w-[400px] flex-none shadow-xl z-20">
+        <aside class="w-[400px] flex-none shadow-xl z-30">
             <app-translation-detail [unit]="selectedUnit()!" [showSource]="features().hasSource"
                 [showNotes]="features().hasNotes" (save)="onUnitUpdate($event)" (close)="selectedUnitId.set(null)" />
         </aside>

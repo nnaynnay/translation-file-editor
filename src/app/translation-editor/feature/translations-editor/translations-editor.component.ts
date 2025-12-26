@@ -2,7 +2,7 @@ import { Component, computed, inject, signal, effect, viewChild, ElementRef } fr
 import { TranslationUnit } from '../../models/translation-unit.model';
 import { TranslationDocument, ParserFeatures, ExportFormat } from '../../services/parsers/translation-parser.interface';
 import { TranslationStateService } from '../../services/translation-state.service';
-import { FileUploadComponent } from '../../ui/file-upload/file-upload.component';
+import { LandingScreenComponent } from '../landing-screen/landing-screen.component';
 import { TranslationTableComponent } from '../../ui/translation-table/translation-table.component';
 import { TranslationDetailComponent } from '../../ui/translation-detail/translation-detail.component';
 import { PaginationComponent } from '../../ui/pagination/pagination.component';
@@ -11,7 +11,7 @@ import { DOCUMENT, DecimalPipe } from '@angular/common';
 @Component({
   selector: 'translations-editor',
   standalone: true,
-  imports: [FileUploadComponent, TranslationTableComponent, TranslationDetailComponent, DecimalPipe, PaginationComponent],
+  imports: [LandingScreenComponent, TranslationTableComponent, TranslationDetailComponent, DecimalPipe, PaginationComponent],
   templateUrl: './translations-editor.component.html',
 })
 export class TranslationsEditorComponent {
