@@ -11,7 +11,7 @@ import { FileUploadComponent } from '../../ui/file-upload/file-upload.component'
         <!-- Hero Section -->
         <div class="mb-12 space-y-4">
           <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">
-            Simple <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">Translation Editor</span>
+            Translation File <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">Editor</span>
           </h1>
           <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Simple and easy to use translation editor for developers and translators.<br />
