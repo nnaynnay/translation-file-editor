@@ -2,6 +2,10 @@
 
 A simple editor for translation files (e.g. XLIFF 1.2, XLIFF 2.0). 
 
+[Live Demo](https://translation-file-editor.vercel.app/)
+
+![Screenshot](doc/attachments/screenshot-1.png)
+
 Built with Angular, Tailwind CSS.
 
 ## Key Features
