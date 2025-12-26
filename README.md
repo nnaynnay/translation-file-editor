@@ -2,11 +2,11 @@
 
 A simple editor for translation files (e.g. XLIFF 1.2, XLIFF 2.0). 
 
-Built with [Angular](https://angular.io/), [Tailwind CSS](https://tailwindcss.com/).
+Built with Angular, Tailwind CSS.
 
 ## Key Features
 
-- **Multi-Format Support**: Support parsing and exporting **XLIFF 1.2** and **XLIFF 2.0** formats.
+- **Multi-Format Support**: Support parsing and exporting **XLIFF 1.2**, **XLIFF 2.0** and **JSON** formats.
 - **Quick Filtering & Search**: Filter units by status (Total, Translated, Missing, Changed).  
 - **No Server-side Processing**: All processing happens entirely in browser. Translation files are never uploaded to a server.
 
