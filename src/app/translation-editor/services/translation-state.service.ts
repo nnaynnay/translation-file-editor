@@ -1,13 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { XliffParserService } from './xliff-parser.service';
+import { TranslationParserService } from './translation-parser.service';
 import { TranslationUnit } from '../models/translation-unit.model';
 import { TranslationDocument, ParserFeatures, ExportFormat } from './parsers/translation-parser.interface';
 
 @Injectable({
     providedIn: 'root'
 })
-export class XliffStateService {
-    private parser = inject(XliffParserService);
+export class TranslationStateService {
+    private parser = inject(TranslationParserService);
 
     // State Signals
     readonly rawDocument = signal<TranslationDocument | null>(null);
@@ -92,7 +92,7 @@ export class XliffStateService {
             return newIds;
         });
 
-        // 2. Update the raw XML document
+        // 2. Update the raw document
         const doc = this.rawDocument();
         if (doc) {
             this.parser.updateUnit(doc, id, newTarget);

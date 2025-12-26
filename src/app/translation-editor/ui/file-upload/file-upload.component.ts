@@ -26,11 +26,13 @@ const ACCEPTED_FILE_TYPES = ['.xlf', '.json'];
         
         <h3 class="text-xl font-bold tracking-tight text-foreground mb-2">Ready to translate?</h3>
         <p class="mb-4 text-sm text-muted-foreground max-w-[280px]">
-          <span class="font-semibold text-primary">Click to upload</span> or drag and drop your XLIFF files here.
+          <span class="font-semibold text-primary">Click to upload</span> or drag and drop your files here.
         </p>
         
         <div class="flex items-center gap-3">
-          <span class="px-2.5 py-1 rounded-full bg-muted text-[10px] font-bold uppercase tracking-wider text-muted-foreground border">.XLF</span>          
+          @for (fileType of acceptedFileTypes; track fileType) {
+            <span class="px-2.5 py-1 rounded-full bg-muted text-[10px] font-bold uppercase tracking-wider text-muted-foreground border">{{ fileType }}</span>          
+          }
         </div>
       </div>
       

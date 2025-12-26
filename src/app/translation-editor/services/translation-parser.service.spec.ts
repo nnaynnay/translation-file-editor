@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { XliffParserService } from './xliff-parser.service';
+import { TranslationParserService } from './translation-parser.service';
 
 const SAMPLE_XLIFF = `<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
@@ -17,12 +17,12 @@ const SAMPLE_XLIFF = `<?xml version="1.0" encoding="UTF-8"?>
   </file>
 </xliff>`;
 
-describe('XliffParserService', () => {
-    let service: XliffParserService;
+describe('TranslationParserService', () => {
+    let service: TranslationParserService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(XliffParserService);
+        service = TestBed.inject(TranslationParserService);
     });
 
     it('should be created', () => {

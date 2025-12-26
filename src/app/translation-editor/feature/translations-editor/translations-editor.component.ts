@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal, effect, viewChild, ElementRef } from '@angular/core';
 import { TranslationUnit } from '../../models/translation-unit.model';
 import { TranslationDocument, ParserFeatures, ExportFormat } from '../../services/parsers/translation-parser.interface';
-import { XliffStateService } from '../../services/xliff-state.service';
+import { TranslationStateService } from '../../services/translation-state.service';
 import { FileUploadComponent } from '../../ui/file-upload/file-upload.component';
 import { TranslationTableComponent } from '../../ui/translation-table/translation-table.component';
 import { TranslationDetailComponent } from '../../ui/translation-detail/translation-detail.component';
@@ -15,7 +15,7 @@ import { DOCUMENT, DecimalPipe } from '@angular/common';
   templateUrl: './translations-editor.component.html',
 })
 export class TranslationsEditorComponent {
-  private state = inject(XliffStateService);
+  private state = inject(TranslationStateService);
   private document = inject(DOCUMENT);
 
   searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');

@@ -9,7 +9,7 @@ import { JsonParser } from './parsers/json.parser';
 @Injectable({
     providedIn: 'root'
 })
-export class XliffParserService {
+export class TranslationParserService {
     private parsers: TranslationParser[] = [
         new Xliff12Parser(),
         new Xliff2Parser(),
@@ -25,14 +25,14 @@ export class XliffParserService {
     // OR we detect again (less efficient but stateless).
     // Given the state service holds the singleton parser service, stateful is okay for this single-file editor.
 
-    parse(xmlContent: string): ReturnType<TranslationParser['parse']> {
+    parse(content: string): ReturnType<TranslationParser['parse']> {
         // Find suitable parser
-        const parser = this.parsers.find(p => p.canParse(xmlContent));
+        const parser = this.parsers.find(p => p.canParse(content));
         if (!parser) {
             // Fallback or specific error?
             // Since `version="2.0"` might be missing or minimal, maybe try 1.2 as default if 2.0 check fails?
             // Or simple check:
-            if (xmlContent.includes('version="2.0"')) {
+            if (content.includes('version="2.0"')) {
                 this.activeParser = this.parsers.find(p => p instanceof Xliff2Parser) || null;
             } else {
                 this.activeParser = this.parsers.find(p => p instanceof Xliff12Parser) || null;
@@ -42,10 +42,10 @@ export class XliffParserService {
         }
 
         if (!this.activeParser) {
-            throw new Error('Unsupported XLIFF version');
+            throw new Error('Unsupported translation file format');
         }
 
-        return this.activeParser.parse(xmlContent);
+        return this.activeParser.parse(content);
     }
 
     getFeatures() {
