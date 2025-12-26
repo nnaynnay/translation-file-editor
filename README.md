@@ -1,6 +1,6 @@
 # Translation File Editor
 
-A simple editor for translation files (e.g. XLIFF 1.2, XLIFF 2.0). 
+A web-based editor for translation files, supporting **XLIFF 1.2**, **XLIFF 2.0**, and **JSON** (flat, nested, and Angular formats).
 
 [Live Demo](https://translation-file-editor.vercel.app/)
 
@@ -10,9 +10,9 @@ Built with Angular, Tailwind CSS.
 
 ## Key Features
 
-- **Multi-Format Support**: Support parsing and exporting **XLIFF 1.2**, **XLIFF 2.0** and **JSON** formats.
-- **Quick Filtering & Search**: Filter units by status (Total, Translated, Missing, Changed).  
-- **No Server-side Processing**: All processing happens entirely in browser. Translation files are never uploaded to a server.
+- **Multi-Format Support**: Parse and export XLIFF 1.2, XLIFF 2.0, and various JSON formats.
+- **Quick Filtering & Search**: Instantly filter units by status (Total, Translated, Missing, Changed) and search through IDs, text, and notes.
+- **100% Client-Side**: All processing happens entirely in the browser. Translation files are never uploaded to a server.
 
 ## Development
 
