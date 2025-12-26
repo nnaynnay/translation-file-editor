@@ -1,5 +1,5 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationParser, TranslationDocument, ExportFormat } from './translation-parser.interface';
+import { ExportFormat, TranslationParser } from './translation-parser.interface';
 
 export class Xliff12Parser implements TranslationParser<Document> {
     canParse(content: string): boolean {
@@ -76,9 +76,9 @@ export class Xliff12Parser implements TranslationParser<Document> {
         const transUnits = document.getElementsByTagName('trans-unit');
         let unitNode: Element | null = null;
 
-        for (let i = 0; i < transUnits.length; i++) {
-            if (transUnits[i].getAttribute('id') === id) {
-                unitNode = transUnits[i];
+        for (const unit of transUnits) {
+            if (unit.getAttribute('id') === id) {
+                unitNode = unit;
                 break;
             }
         }

@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { TranslationUnit } from '../../models/translation-unit.model';
 
 @Component({

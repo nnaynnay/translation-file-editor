@@ -1,5 +1,5 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationParser, TranslationDocument, ExportFormat } from './translation-parser.interface';
+import { ExportFormat, TranslationParser } from './translation-parser.interface';
 
 export class Xliff2Parser implements TranslationParser<Document> {
     canParse(content: string): boolean {
@@ -68,15 +68,15 @@ export class Xliff2Parser implements TranslationParser<Document> {
         let unitNode: Element | null = null;
 
         // XLIFF 2.0 IDs are unique within a file, but let's just search globally for now
-        for (let i = 0; i < units.length; i++) {
-            if (units[i].getAttribute('id') === id) {
-                unitNode = units[i];
+        for (const unit of units) {
+            if (unit.getAttribute('id') === id) {
+                unitNode = unit;
                 break;
             }
         }
 
         if (unitNode) {
-            let segment = unitNode.querySelector('segment');
+            const segment = unitNode.querySelector('segment');
             if (!segment) {
                 // Should verify XLIFF 2.0 spec if we can create segments dynamically, but usually they key off source
                 console.warn('Segment not found for unit', id);

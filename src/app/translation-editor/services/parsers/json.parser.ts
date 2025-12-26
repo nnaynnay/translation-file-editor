@@ -1,5 +1,5 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationParser, ExportFormat } from './translation-parser.interface';
+import { ExportFormat, TranslationParser } from './translation-parser.interface';
 
 export class JsonParser implements TranslationParser<Record<string, unknown>> {
     private format: 'flat' | 'nested' | 'angular' = 'flat';

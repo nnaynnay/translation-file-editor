@@ -8,6 +8,7 @@ const ACCEPTED_FILE_TYPES = ['.xlf', '.json'];
   template: `
     <div 
       class="group relative flex flex-col items-center justify-center w-full max-w-xl mx-auto h-72 border-2 border-dashed rounded-2xl cursor-pointer bg-card hover:bg-accent/5 transition-all duration-300 ease-in-out overflow-hidden"
+      tabindex="0"
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
       (drop)="onDrop($event)"
@@ -15,6 +16,7 @@ const ACCEPTED_FILE_TYPES = ['.xlf', '.json'];
       [class.bg-accent/10]="isDragging()"
       [class.border-muted-foreground/20]="!isDragging()"
       (click)="fileInput.click()"
+      (keypress)="fileInput.click()"
     >
       <!-- Subtle Gradient Background -->
       <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

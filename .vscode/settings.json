@@ -1,0 +1,16 @@
+{
+    "[html]": {
+        "editor.rulers": [
+            140
+        ]
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.ts": "always",
+        "source.organizeImports": "always",
+        "source.sort.json": "always",
+        "source.sortImports": "always"
+    },
+    "editor.rulers": [
+        100
+    ]
+}

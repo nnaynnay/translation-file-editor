@@ -1,15 +1,14 @@
-import { Component, computed, inject, signal, effect, viewChild, ElementRef } from '@angular/core';
-import { TranslationUnit } from '../../models/translation-unit.model';
-import { TranslationDocument, ParserFeatures, ExportFormat } from '../../services/parsers/translation-parser.interface';
-import { TranslationStateService } from '../../services/translation-state.service';
-import { LandingScreenComponent } from '../landing-screen/landing-screen.component';
-import { TranslationTableComponent } from '../../ui/translation-table/translation-table.component';
-import { TranslationDetailComponent } from '../../ui/translation-detail/translation-detail.component';
-import { PaginationComponent } from '../../ui/pagination/pagination.component';
 import { DOCUMENT, DecimalPipe } from '@angular/common';
+import { Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { ExportFormat } from '../../services/parsers/translation-parser.interface';
+import { TranslationStateService } from '../../services/translation-state.service';
+import { PaginationComponent } from '../../ui/pagination/pagination.component';
+import { TranslationDetailComponent } from '../../ui/translation-detail/translation-detail.component';
+import { TranslationTableComponent } from '../../ui/translation-table/translation-table.component';
+import { LandingScreenComponent } from '../landing-screen/landing-screen.component';
 
 @Component({
-  selector: 'translations-editor',
+  selector: 'app-translations-editor',
   standalone: true,
   imports: [LandingScreenComponent, TranslationTableComponent, TranslationDetailComponent, DecimalPipe, PaginationComponent],
   templateUrl: './translations-editor.component.html',
@@ -84,12 +83,6 @@ export class TranslationsEditorComponent {
     }
   }
 
-  onFilterChange(event: Event) {
-    // Legacy method - remove or keep empty if needed by template reference?
-    // Template now uses onSearchInput
-  }
-
-
   constructor() {
     effect(() => {
       const features = this.features();
@@ -155,7 +148,7 @@ export class TranslationsEditorComponent {
     }
 
     const currentIndex = units.findIndex(u => u.id === currentId);
-    let nextIndex = currentIndex + direction;
+    const nextIndex = currentIndex + direction;
 
     if (nextIndex >= 0 && nextIndex < units.length) {
       this.selectUnit(units[nextIndex].id);

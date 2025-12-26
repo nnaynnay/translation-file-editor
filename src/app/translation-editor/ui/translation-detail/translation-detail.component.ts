@@ -1,4 +1,4 @@
-import { Component, input, output, effect, viewChild, ElementRef, computed } from '@angular/core';
+import { Component, ElementRef, computed, input, output, viewChild } from '@angular/core';
 import { TranslationUnit } from '../../models/translation-unit.model';
 
 @Component({
@@ -10,7 +10,7 @@ export class TranslationDetailComponent {
   unit = input.required<TranslationUnit>();
   showSource = input<boolean>(true);
   showNotes = input<boolean>(true);
-  close = output<void>();
+  closed = output<void>();
   save = output<{ id: string, target: string }>();
 
   sortedNotes = computed(() => {
