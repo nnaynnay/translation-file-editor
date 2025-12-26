@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TranslationUnit } from '../models/translation-unit.model';
-import { TranslationParser, TranslationDocument, ExportFormat } from './parsers/translation-parser.interface';
+import { JsonParser } from './parsers/json.parser';
+import { AngularJsonFormat, ExportFormat, JsonTranslationMap, TranslationDocument, TranslationParser } from './parsers/translation-parser.interface';
 import { Xliff12Parser } from './parsers/xliff-12.parser';
 import { Xliff2Parser } from './parsers/xliff-2.parser';
-import { JsonParser } from './parsers/json.parser';
 
 
 @Injectable({
@@ -76,7 +76,7 @@ export class TranslationParserService {
 
     generateJson(units: TranslationUnit[], format: 'flat' | 'nested' | 'angular' = 'flat', locale?: string): string {
         if (format === 'flat') {
-            const output: Record<string, string> = {};
+            const output: JsonTranslationMap = {};
             units.forEach(u => {
                 output[u.id] = u.target;
             });
@@ -84,19 +84,19 @@ export class TranslationParserService {
         }
 
         if (format === 'angular') {
-            const translations: Record<string, string> = {};
+            const translations: JsonTranslationMap = {};
             units.forEach(u => {
                 translations[u.id] = u.target;
             });
-            const output: any = { translations };
-            if (locale) {
-                output.locale = locale;
-            }
+            const output: AngularJsonFormat = {
+                locale: locale || '',
+                translations
+            };
             return JSON.stringify(output, null, 2);
         }
 
         if (format === 'nested') {
-            const output: any = {};
+            const output: JsonTranslationMap = {};
             units.forEach(u => {
                 const keys = u.id.split('.');
                 let current = output;
@@ -105,7 +105,7 @@ export class TranslationParserService {
                     if (!current[key] || typeof current[key] !== 'object') {
                         current[key] = {};
                     }
-                    current = current[key];
+                    current = current[key] satisfies JsonTranslationMap;
                 }
                 current[keys[keys.length - 1]] = u.target;
             });

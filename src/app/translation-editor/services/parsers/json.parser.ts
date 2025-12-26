@@ -1,7 +1,7 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
-import { ExportFormat, TranslationParser } from './translation-parser.interface';
+import { AngularJsonFormat, ExportFormat, JsonTranslationMap, TranslationParser } from './translation-parser.interface';
 
-export class JsonParser implements TranslationParser<Record<string, unknown>> {
+export class JsonParser implements TranslationParser<JsonTranslationMap | AngularJsonFormat> {
     private format: 'flat' | 'nested' | 'angular' = 'flat';
 
     canParse(content: string): boolean {
@@ -14,33 +14,34 @@ export class JsonParser implements TranslationParser<Record<string, unknown>> {
     }
 
     parse(content: string) {
-        const json = JSON.parse(content) as Record<string, unknown>;
+        const json = JSON.parse(content) as JsonTranslationMap | AngularJsonFormat;
         const units: TranslationUnit[] = [];
 
-        if (json['translations'] && typeof json['translations'] === 'object') {
+        if ('translations' in json && typeof json.translations === 'object') {
             this.format = 'angular';
-            this.flatten(json['translations'] as Record<string, unknown>, '', units);
+            this.flatten(json.translations, '', units);
         } else {
+            const map = json as JsonTranslationMap;
             // Check if it's flat or nested. If any value is an object, it's nested.
-            const values = Object.values(json);
+            const values = Object.values(map);
             const isNested = values.some(v => typeof v === 'object' && v !== null);
             this.format = isNested ? 'nested' : 'flat';
-            this.flatten(json, '', units);
+            this.flatten(map, '', units);
         }
 
         return {
             document: json,
             units,
             documentFormat: `json (${this.format})`,
-            sourceLang: (json['locale'] as string) || undefined
+            targetLang: ('locale' in json ? (json.locale as string) : undefined)
         };
     }
 
-    private flatten(obj: Record<string, unknown>, prefix: string, units: TranslationUnit[]) {
+    private flatten(obj: JsonTranslationMap, prefix: string, units: TranslationUnit[]) {
         for (const [key, value] of Object.entries(obj)) {
             const newKey = prefix ? `${prefix}.${key}` : key;
-            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                this.flatten(value as Record<string, unknown>, newKey, units);
+            if (typeof value === 'object' && value !== null) {
+                this.flatten(value, newKey, units);
             } else {
                 units.push({
                     id: newKey,
@@ -51,29 +52,28 @@ export class JsonParser implements TranslationParser<Record<string, unknown>> {
         }
     }
 
-    updateUnit(document: Record<string, unknown>, id: string, targetValue: string): void {
-        let current: any = document;
-
-        if (this.format === 'angular' && document['translations']) {
-            current = document['translations'];
-        }
+    updateUnit(document: JsonTranslationMap | AngularJsonFormat, id: string, targetValue: string): void {
+        const currentMap = ('translations' in document && typeof document.translations === 'object')
+            ? document.translations
+            : document as JsonTranslationMap;
 
         if (this.format === 'nested') {
             const keys = id.split('.');
+            let tip = currentMap;
             for (let i = 0; i < keys.length - 1; i++) {
                 const key = keys[i];
-                if (!current[key] || typeof current[key] !== 'object') {
-                    current[key] = {};
+                if (!tip[key] || typeof tip[key] !== 'object') {
+                    tip[key] = {};
                 }
-                current = current[key];
+                tip = tip[key] as JsonTranslationMap;
             }
-            current[keys[keys.length - 1]] = targetValue;
+            tip[keys[keys.length - 1]] = targetValue;
         } else {
-            current[id] = targetValue;
+            currentMap[id] = targetValue;
         }
     }
 
-    serialize(document: Record<string, unknown>): string {
+    serialize(document: JsonTranslationMap | AngularJsonFormat): string {
         return JSON.stringify(document, null, 2);
     }
 

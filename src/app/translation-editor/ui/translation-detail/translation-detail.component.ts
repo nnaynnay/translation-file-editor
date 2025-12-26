@@ -1,5 +1,5 @@
 import { Component, ElementRef, computed, input, output, viewChild } from '@angular/core';
-import { TranslationUnit } from '../../models/translation-unit.model';
+import { TranslationNote, TranslationUnit } from '../../models/translation-unit.model';
 
 @Component({
   selector: 'app-translation-detail',
@@ -18,9 +18,9 @@ export class TranslationDetailComponent {
     if (!notes) return [];
 
     return [...notes].sort((a, b) => {
-      const getPriority = (n: any) => {
+      const getPriority = (n: TranslationNote) => {
         if (n.type === 'note' && n.priority) {
-          return parseInt(n.priority, 10);
+          return n.priority;
         }
         return 10; // Default lower priority for locations or notes without priority
       };

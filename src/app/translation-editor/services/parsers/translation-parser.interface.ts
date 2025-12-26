@@ -1,6 +1,15 @@
 import { TranslationUnit } from '../../models/translation-unit.model';
 
-export type TranslationDocument = Document | Record<string, unknown>;
+export interface JsonTranslationMap {
+    [key: string]: string | JsonTranslationMap;
+}
+
+export interface AngularJsonFormat {
+    locale: string;
+    translations: JsonTranslationMap;
+}
+
+export type TranslationDocument = Document | JsonTranslationMap | AngularJsonFormat;
 
 export interface ParserFeatures {
     hasSource: boolean;

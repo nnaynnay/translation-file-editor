@@ -1,4 +1,5 @@
 import { JsonParser } from './json.parser';
+import { AngularJsonFormat, JsonTranslationMap } from './translation-parser.interface';
 
 describe('JsonParser', () => {
     let parser: JsonParser;
@@ -35,22 +36,26 @@ describe('JsonParser', () => {
         const content = JSON.stringify({ "a.b": "v1" });
         const { document } = parser.parse(content);
         parser.updateUnit(document, 'a.b', 'new');
-        expect(document['a.b']).toBe('new');
-        expect(document['a']).toBeUndefined();
+        const map = document as JsonTranslationMap;
+        expect(map['a.b']).toBe('new');
+        expect(map['a']).toBeUndefined();
     });
 
     it('should update unit in nested format with splitting dots', () => {
         const content = JSON.stringify({ "a": { "b": "v1" } });
         const { document } = parser.parse(content);
         parser.updateUnit(document, 'a.b', 'new');
-        expect((document['a'] as any)['b']).toBe('new');
+        const map = document as JsonTranslationMap;
+        const a = map['a'] as JsonTranslationMap;
+        expect(a['b']).toBe('new');
     });
 
     it('should update unit in angular format without splitting dots', () => {
         const content = JSON.stringify({ "translations": { "a.b": "v1" } });
         const { document } = parser.parse(content);
         parser.updateUnit(document, 'a.b', 'new');
-        expect((document['translations'] as any)['a.b']).toBe('new');
-        expect((document['translations'] as any)['a']).toBeUndefined();
+        const angular = document as AngularJsonFormat;
+        expect(angular.translations['a.b']).toBe('new');
+        expect(angular.translations['a']).toBeUndefined();
     });
 });
