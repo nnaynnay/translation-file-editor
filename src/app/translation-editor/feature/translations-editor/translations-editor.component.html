@@ -11,9 +11,11 @@
                     <span
                         class="uppercase font-mono bg-muted px-1.5 py-0.5 rounded text-[10px] tracking-wider font-medium">{{
                         documentFormat() }}</span>
-                    <span>{{ sourceLang() || '?' }}</span>
-                    <span class="text-[10px]">➜</span>
-                    <span>{{ targetLang() || '?' }}</span>
+                        @if (sourceLang() || targetLang()) {
+                            <span>{{ sourceLang() || '?' }}</span>
+                            <span class="text-[10px]">➜</span>
+                            <span>{{ targetLang() || '?' }}</span>
+                        }                    
                 </div>
                 }
             </div>
